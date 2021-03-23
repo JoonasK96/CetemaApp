@@ -27,7 +27,6 @@ Widget buildCompass() {
 
       int ang = (direction.round());
       return Stack(
-
         children: [
           Container(
             alignment: Alignment.center,

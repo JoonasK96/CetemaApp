@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/compass.dart';
 
-
 class Map extends StatefulWidget {
   Map({Key key}) : super(key: key);
 
@@ -14,6 +13,4 @@ class _MapScreenState extends State<Map> {
   Widget build(BuildContext context) {
     return buildCompass();
   }
-
-
 }
