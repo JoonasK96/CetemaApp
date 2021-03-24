@@ -29,21 +29,24 @@ Widget buildCompass() {
       return Stack(
         children: [
           Container(
+            color: Colors.grey[900],
             alignment: Alignment.center,
             child: Transform.rotate(
               angle: ((direction ?? 0) * (math.pi / 180) * -1),
               child: Image(image: AssetImage('assets/compass.png')),
             ),
           ),
-          Center(
+          Positioned.fill(
             child: Image(image: AssetImage('assets/dial.png')),
           ),
-          Center(
-            child: Text(
-              "$ang",
-              style: TextStyle(
-                color: Color(0xFFEBEBEB),
-                fontSize: 24,
+          Positioned.fill(
+            child: Align(
+              child: Text(
+                "$ang",
+                style: TextStyle(
+                  color: Color(0xFFEBEBEB),
+                  fontSize: 24,
+                ),
               ),
             ),
           ),

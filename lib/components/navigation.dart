@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/app_bar.dart';
 import 'package:flutter_app/screens/map_screen.dart';
 
+
 class Navigation extends StatefulWidget {
   @override
   _NavigationState createState() => _NavigationState();
@@ -10,7 +11,11 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[Map()];
+  static List<Widget> _widgetOptions = <Widget>[
+    Map(),
+   // Weather()
+
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
