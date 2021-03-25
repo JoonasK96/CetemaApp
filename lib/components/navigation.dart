@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/weather_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/app_bar.dart';
 import 'package:flutter_app/screens/map_screen.dart';
@@ -13,7 +14,7 @@ class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     Map(),
-   // Weather()
+    GetWeather()
 
   ];
 
@@ -22,6 +23,7 @@ class _NavigationState extends State<Navigation> {
       _selectedIndex = index;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
