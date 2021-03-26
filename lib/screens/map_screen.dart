@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/compass.dart';
-
+import 'package:flutter_app/components/app_bar.dart';
+import 'package:flutter_app/components/drawer.dart';
 class Map extends StatefulWidget {
   Map({Key key}) : super(key: key);
 
@@ -11,13 +12,17 @@ class Map extends StatefulWidget {
 class _MapScreenState extends State<Map> {
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      color: Colors.black87,
-      child: Column(
+    return  Scaffold(
+      appBar: appBar(),
+      drawer: drawer(),
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.black87,
+      body: Column(
 
         children:  <Widget>[
           Column(
-            children: <Widget> [ Container(
+            children: <Widget> [
+            /*  Container(
             height: 50.0,
             color: Colors.grey[850],
             child: Row(
@@ -36,14 +41,18 @@ class _MapScreenState extends State<Map> {
                   ),)
               ],
             ),
-          ),],
+          ),*/
+            ],
           ),
 
 
 
-
-
-          buildCompass()],
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+              child: buildCompass(),
+            )
+          ),],
       ),
 
     );

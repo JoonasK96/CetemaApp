@@ -54,6 +54,13 @@ flutter:
   assets:
     - assets/compass.png
     - assets/dial.png
+    - assets/sunny.jpg
+    - assets/clouds.jpg
+    - assets/drizzle.jpg
+    - assets/rain.jpg
+    - assets/snow.jpg
+    - assets/thunder.jpg
+    - assets/mist.jpg
 
 
 
