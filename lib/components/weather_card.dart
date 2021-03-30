@@ -1,8 +1,8 @@
-
-import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:flutter/material.dart';
 
 
 
@@ -20,7 +20,7 @@ class _WeatherState extends State<GetWeather> {
   int weather;
   Temperature temp;
   String icon;
-  List thunder = [200, 201, 202, 210, 211, 212, 221, 230,231, 232];
+
 
   @override
   void initState() {
@@ -70,28 +70,40 @@ class _WeatherState extends State<GetWeather> {
       break;
       case 800: {return AssetImage("assets/sunny.jpg");}
       break;
-      case 8: {return AssetImage("assets/clouds-137.jpg");}
+      case 8: {return AssetImage("assets/clouds.jpg");}
       break;
 
     }
 
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return  Card(
+      color: Colors.grey[850],
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        //borderRadius: BorderRadius.circular(10),
       ),
-      margin: EdgeInsets.all(10.0),
-      child: Container(
+      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      child: Padding(
+
+        padding: const EdgeInsets.fromLTRB(0, 60, 0, 0 ),
+        child: Container(
+        height: 200,
+        width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.purple[400],
+       // color: Colors.grey[400],
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
+
             image: weatherImg(),
             colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.5), BlendMode.dstATop),
+                Colors.black.withOpacity(0.75),
+                 BlendMode.dstATop
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -102,7 +114,7 @@ class _WeatherState extends State<GetWeather> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                icon,
+                '$temp',
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.white,
@@ -134,6 +146,7 @@ class _WeatherState extends State<GetWeather> {
           ),
         ),
       ),
+    ),
     );
   }
 }

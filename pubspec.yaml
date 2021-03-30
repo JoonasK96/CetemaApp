@@ -33,7 +33,8 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   weather: ^1.2.4
   geolocator: ^6.2.0
-
+  image: ^3.0.2
+  fl_chart: ^0.30.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/components/forecast_card.dart';
 import 'package:flutter_app/components/weather_card.dart';
 
 class WeatherScreen extends StatelessWidget {
@@ -7,11 +8,17 @@ class WeatherScreen extends StatelessWidget {
     return Column(
 
       children: <Widget>[
-        Row(
+        Column(
 
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GetWeather()
+            GetWeather(),
+           Container(
+             width: double.infinity,
+             height: 306,
+             child: GetForecast() ,
+           )
+           //
           ],
         )
       ],
