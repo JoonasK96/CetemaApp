@@ -62,7 +62,7 @@ flutter:
     - assets/snow.jpg
     - assets/thunder.jpg
     - assets/mist.jpg
-
+    - assets/sunny2.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

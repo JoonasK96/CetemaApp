@@ -29,7 +29,7 @@ Widget buildCompass() {
       return Stack(
         children: [
           Container(
-            color: Colors.grey[900],
+            color: Colors.grey[750],
             alignment: Alignment.center,
             child: Transform.rotate(
               angle: ((direction ?? 0) * (math.pi / 180) * -1),

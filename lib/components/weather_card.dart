@@ -68,7 +68,7 @@ class _WeatherState extends State<GetWeather> {
       break;
       case 7: {return AssetImage("assets/mist.jpg");}
       break;
-      case 800: {return AssetImage("assets/sunny.jpg");}
+      case 800: {return AssetImage("assets/sunny2.jpg");}
       break;
       case 8: {return AssetImage("assets/clouds.jpg");}
       break;
