@@ -15,7 +15,7 @@ jobs:
   flutter_test:
     name: Run flutter test and analyze
   build:
-    runs-on: windows
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: action/setup-java@v1
