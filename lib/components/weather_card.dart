@@ -1,7 +1,6 @@
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 
 

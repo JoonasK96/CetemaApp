@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
@@ -16,6 +18,8 @@ class _ForecastState extends State<GetForecast> {
   WeatherFactory ws;
   double lat, lon;
   List<Weather> forecastData = [];
+  String temp;
+
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _ForecastState extends State<GetForecast> {
     (await ws.fiveDayForecastByLocation(lat, lon)).cast<Weather>();
     forecastData = forecasts;
     print('$forecasts');
+    temp = forecastData[1].temperature.toString();
 
   }
 
@@ -70,7 +75,10 @@ class _ForecastState extends State<GetForecast> {
 
       ],
         ),
-        forecastDays(),
+        Container(
+
+      child: forecastDays()
+        ),
       ],
 
     );
@@ -202,74 +210,15 @@ class _ForecastState extends State<GetForecast> {
     );
   }
 
-  Container forecastDays() {
-    return Container(
-      color: Colors.blue[200],
-      child: Column(
-        children: [
-          Row(
+  ListView forecastDays() {
+    return ListView(
+     // Text(forecastData[2].temperature.toString().split(" ")[0])
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
 
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                child: Column(
-                  children: [
-                    Text('Ma'),
-                   Icon(Icons.wb_sunny),
-                    Text('+20')
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Text('Ti'),
-                    Icon(Icons.cloud),
-                    Text('+2')
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Text('Ke'),
-                    Icon(Icons.cloud),
-                    Text('+2')
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Text('To'),
-                    Icon(Icons.wb_sunny),
-                    Text('+2')
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Text('Pe'),
-                    Icon(Icons.wb_sunny),
-                    Text('+2')
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Text('La'),
-                    Icon(Icons.wb_sunny),
-                    Text('+2')
-                  ],
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+             ],
+                );
+
   }
 }
 

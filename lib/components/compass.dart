@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'dart:math' as math;
@@ -29,7 +30,7 @@ Widget buildCompass() {
       return Stack(
         children: [
           Container(
-            color: Colors.grey[750],
+
             alignment: Alignment.center,
             child: Transform.rotate(
               angle: ((direction ?? 0) * (math.pi / 180) * -1),

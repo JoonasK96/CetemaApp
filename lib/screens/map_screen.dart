@@ -16,7 +16,7 @@ class _MapScreenState extends State<Map> {
       appBar: appBar(),
       drawer: drawer(),
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.black,
       body: Column(
 
         children:  <Widget>[
