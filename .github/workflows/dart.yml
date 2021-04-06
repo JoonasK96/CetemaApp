@@ -7,9 +7,9 @@ name: Dart
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, master2.0 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, master2.0 ]
 
 jobs:
   flutter_test:
