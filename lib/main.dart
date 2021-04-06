@@ -14,7 +14,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   //Firebase initti
-  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+ // final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
