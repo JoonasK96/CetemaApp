@@ -73,7 +73,7 @@ class _WeatherState extends State<GetWeather> {
       break;
 
     }
-
+    return AssetImage("assets/sunny2.jpg");
   }
 
 
