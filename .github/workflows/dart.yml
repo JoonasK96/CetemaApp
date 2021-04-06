@@ -22,7 +22,7 @@ jobs:
         with:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
-       with:
+        with:
          channel: "master"
       - run: flutter pub get
       - run: flutter analyze
