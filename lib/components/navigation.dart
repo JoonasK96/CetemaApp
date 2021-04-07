@@ -14,7 +14,7 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    Map(),
+    MapScreen(),
     WeatherScreen()
 
   ];

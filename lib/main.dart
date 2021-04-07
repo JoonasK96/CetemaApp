@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/map_screen.dart';
 import 'components/navigation.dart';
-//import 'package:firebase_database/firebase_database.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
-//import 'dart:math';
+import 'dart:math';
+import 'package:flutter_app/screens/map_screen.dart';
 
-//void main() => runApp(MyApp()); korvasin tän tolla alemmalla t. Otto
+void main() => runApp(MyApp()); //korvasin tän tolla alemmalla t. Otto
 
-Future<void> main() async {
+/*Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
-}
+}*/
+
 
 class MyApp extends StatelessWidget {
   //Firebase initti
@@ -21,6 +24,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Navigation(),
+
     );
   }
 }
+
