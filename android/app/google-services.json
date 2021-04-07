@@ -1,39 +1,39 @@
 {
-    "project_info": {
-      "project_number": "862651456972",
-      "project_id": "cetemaproject",
-      "storage_bucket": "cetemaproject.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:862651456972:android:5b9119b515a89c36cc1169",
-          "android_client_info": {
-            "package_name": "com.example.flutter_app"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "862651456972-60ighovlniavt30ebk8eolt2ahu0ecub.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyDTmazRyQ49XYa4C8uXQUrYeum1_8Cufeo"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "862651456972-60ighovlniavt30ebk8eolt2ahu0ecub.apps.googleusercontent.com",
-                "client_type": 3
-              }
-            ]
-          }
+  "project_info": {
+    "project_number": "862651456972",
+    "project_id": "cetemaproject",
+    "storage_bucket": "cetemaproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862651456972:android:5b9119b515a89c36cc1169",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862651456972-60ighovlniavt30ebk8eolt2ahu0ecub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTmazRyQ49XYa4C8uXQUrYeum1_8Cufeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862651456972-60ighovlniavt30ebk8eolt2ahu0ecub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}
