@@ -12,8 +12,8 @@ class WeatherScreen extends StatelessWidget {
 
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           // GetWeather(),
-           /* Container(
+            GetWeather(),
+          /*  Container(
              width: double.infinity,
              height: 306,
              child: GetForecast() ,

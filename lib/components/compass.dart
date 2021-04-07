@@ -30,6 +30,8 @@ Widget buildCompass() {
       return Stack(
         children: [
           Container(
+            width: 200,
+            height: 200,
 
             alignment: Alignment.center,
             child: Transform.rotate(
@@ -46,7 +48,7 @@ Widget buildCompass() {
                 "$ang",
                 style: TextStyle(
                   color: Color(0xFFEBEBEB),
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
               ),
             ),
