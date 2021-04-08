@@ -42,11 +42,6 @@ class MapScreen extends StatelessWidget {
           */
             Stack(children: [
           Container(child: Map()),
-          Container(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
-            child: buildCompass(),
-          )),
         ]));
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_app/components/compass.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
@@ -53,6 +54,10 @@ class _MapState extends State<Map> {
         initialCameraPosition: CameraPosition(target: _initialcameraposition),
         onMapCreated: _onMapCreated,
         myLocationEnabled: true,
+        myLocationButtonEnabled: false,
+        padding: EdgeInsets.only(
+          top: 0,
+        ),
         mapType: _currentMapType,
       ),
       Positioned(
@@ -63,16 +68,12 @@ class _MapState extends State<Map> {
             RawMaterialButton(
               elevation: 2.0,
               shape: CircleBorder(),
-              fillColor: Colors.red,
-              onPressed: () {},
-              child: Icon(
-                Icons.compass_calibration,
-                color: Colors.white,
-                size: 20.0,
-              ),
+              fillColor: Colors.blue,
+              onPressed: _compassOnPress,
+              child: FaIcon(FontAwesomeIcons.compass),
               constraints: BoxConstraints.tightFor(
-                width: 56.0,
-                height: 56.0,
+                width: 40.0,
+                height: 40.0,
               ),
             ),
             FloatingActionButton(
@@ -84,6 +85,12 @@ class _MapState extends State<Map> {
           ],
         ),
       ),
+      Visibility(
+          visible: visibility,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: buildCompass(),
+          )),
     ]);
   }
 }
