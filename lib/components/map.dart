@@ -36,43 +36,41 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-              GoogleMap(
-                initialCameraPosition:
-                CameraPosition(target: _initialcameraposition),
-                onMapCreated: _onMapCreated,
-                myLocationEnabled: true,
-                mapType: _currentMapType,
+      GoogleMap(
+        initialCameraPosition: CameraPosition(target: _initialcameraposition),
+        onMapCreated: _onMapCreated,
+        myLocationEnabled: true,
+        mapType: _currentMapType,
+      ),
+      Positioned(
+        bottom: 10,
+        left: 4,
+        child: Column(
+          children: <Widget>[
+            RawMaterialButton(
+              elevation: 2.0,
+              shape: CircleBorder(),
+              fillColor: Colors.red,
+              onPressed: () {},
+              child: Icon(
+                Icons.compass_calibration,
+                color: Colors.white,
+                size: 20.0,
               ),
-              Positioned(
-                bottom: 10,
-                left: 4,
-                child: Column(
-                    children: <Widget>[
-                      RawMaterialButton(
-                        elevation: 2.0,
-                        shape: CircleBorder(),
-                        fillColor: Colors.red,
-                        onPressed: (){},
-                        child: Icon(
-                          Icons.compass_calibration,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                        constraints: BoxConstraints.tightFor(
-                          width: 56.0,
-                          height: 56.0,
-                        ),
-                      ),
-                      FloatingActionButton(
-                        onPressed: _onMapTypeButtonPressed,
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
-                        backgroundColor: Colors.green,
-                        child: const Icon(Icons.map, size: 36.0),
-                      ),
-                    ],
-                  ),
-                ),
-
-            ]);
+              constraints: BoxConstraints.tightFor(
+                width: 56.0,
+                height: 56.0,
+              ),
+            ),
+            FloatingActionButton(
+              onPressed: _onMapTypeButtonPressed,
+              materialTapTargetSize: MaterialTapTargetSize.padded,
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.map, size: 36.0),
+            ),
+          ],
+        ),
+      ),
+    ]);
   }
 }
