@@ -32,7 +32,6 @@ Widget buildCompass() {
           Container(
             width: 200,
             height: 200,
-
             alignment: Alignment.center,
             child: Transform.rotate(
               angle: ((direction ?? 0) * (math.pi / 180) * -1),

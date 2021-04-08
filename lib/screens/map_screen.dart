@@ -39,7 +39,6 @@ class MapScreen extends StatelessWidget {
           ),*/ /*
             ],
           ),
-<<<<<<< HEAD
           */
             Stack(children: [
           Container(child: Map()),
@@ -49,14 +48,5 @@ class MapScreen extends StatelessWidget {
             child: buildCompass(),
           )),
         ]));
-=======
-          */Stack(
-              children: [
-
-                Container(
-                child: Map()),
-           ] ));
-
->>>>>>> 8bc6f017cd9377c58f17901708a37013f66c7f3b
   }
 }

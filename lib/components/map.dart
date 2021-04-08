@@ -36,18 +36,19 @@ class _MapState extends State<Map> {
           : MapType.normal;
     });
   }
-  void _compassOnPress(){
+
+  void _compassOnPress() {
     setState(() {
-    if(visibility == false){
-      visibility = true;
-    } else
-      visibility = false;
-  });
-        }
+      if (visibility == false) {
+        visibility = true;
+      } else
+        visibility = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-<<<<<<< HEAD
       GoogleMap(
         initialCameraPosition: CameraPosition(target: _initialcameraposition),
         onMapCreated: _onMapCreated,
@@ -84,50 +85,5 @@ class _MapState extends State<Map> {
         ),
       ),
     ]);
-=======
-              GoogleMap(
-                initialCameraPosition:
-                CameraPosition(target: _initialcameraposition),
-                onMapCreated: _onMapCreated,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                padding: EdgeInsets.only(top: 0,),
-                mapType: _currentMapType,
-              ),
-              Positioned(
-                bottom: 10,
-                left: 4,
-                child: Column(
-                    children: <Widget>[
-                      RawMaterialButton(
-                        elevation: 2.0,
-                        shape: CircleBorder(),
-                        fillColor: Colors.blue,
-                        onPressed: _compassOnPress,
-                        child: FaIcon(FontAwesomeIcons.compass),
-                        constraints: BoxConstraints.tightFor(
-                          width: 40.0,
-                          height: 40.0,
-                        ),
-                      ),
-                      FloatingActionButton(
-                        onPressed: _onMapTypeButtonPressed,
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
-                        backgroundColor: Colors.green,
-                        child: const Icon(Icons.map, size: 36.0),
-                      ),
-
-                    ],
-                  ),
-                ),
-                       Visibility(
-                      visible: visibility,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: buildCompass(),
-                        )
-                  ),
-            ]);
->>>>>>> 8bc6f017cd9377c58f17901708a37013f66c7f3b
   }
 }
