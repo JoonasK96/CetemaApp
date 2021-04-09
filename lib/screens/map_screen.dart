@@ -43,6 +43,8 @@ class MapScreen extends StatelessWidget {
               children: [
 
                 Container(
+                  width: double.maxFinite,
+                  height: double.maxFinite,
                 child: Map()),
            ] ));
 

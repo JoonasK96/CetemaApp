@@ -45,6 +45,7 @@ dependencies:
   geolocator: ^6.2.0
   image: ^3.0.2
   fl_chart: ^0.30.0
+  cron: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

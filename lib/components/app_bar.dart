@@ -7,10 +7,13 @@ Widget appBar() {
     title: Center(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: Text('Home'),
+      child: Text('Map', style: TextStyle(color: Colors.black),),
     ),),
     actions: <Widget>[
-      IconButton(icon: FaIcon(FontAwesomeIcons.ellipsisV), onPressed: () => {}),
+      IconButton(
+          icon: FaIcon(FontAwesomeIcons.ellipsisV),
+          color: Colors.black,
+          onPressed: () => {}),
 
     ],
 
