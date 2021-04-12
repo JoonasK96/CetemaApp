@@ -13,11 +13,11 @@ class WeatherScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GetWeather(),
-           Container(
+          /*  Container(
              width: double.infinity,
              height: 306,
              child: GetForecast() ,
-           )
+           ),*/
            //
           ],
         )

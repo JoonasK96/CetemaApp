@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget drawer() {
   return Drawer(
+
     child: Container(
       color: Colors.transparent.withOpacity(.7),
       child: Column(
