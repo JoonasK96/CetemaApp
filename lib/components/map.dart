@@ -4,6 +4,8 @@ import 'package:flutter_app/components/compass.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Map extends StatefulWidget {
   @override
@@ -16,6 +18,8 @@ class _MapState extends State<Map> {
   Location _location = Location();
   bool visibility = false;
 
+  Set<Marker> _markers = {};
+
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
@@ -25,7 +29,17 @@ class _MapState extends State<Map> {
         ),
       );
     });
+
+    //setState(() {
+    //  _markers.add(Marker(markerId: MarkerId('id1'), position: LatLng(loc)));
+    //});
+    //populateClients();
   }
+
+  // populateClients() {
+  // clients = {};
+  // Firestore.instance.collection
+  //}
 
   MapType _currentMapType = MapType.normal;
 
