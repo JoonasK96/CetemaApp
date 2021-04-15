@@ -22,9 +22,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   //Firebase initti
  // final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
-void time () async{
 
-}
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
