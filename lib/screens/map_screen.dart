@@ -5,19 +5,19 @@ import 'package:flutter_app/components/drawer.dart';
 import 'package:flutter_app/components/map.dart';
 
 class MapScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(),
-      drawer: drawer(),
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.black,
-      body: /*Column(
+        appBar: appBar(),
+        drawer: drawer(),
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.black,
+        body:
+            /*Column(
         children: <Widget>[
           Column(
             children: <Widget>[
-              *//*  Container(
+              */ /*  Container(
             height: 50.0,
             color: Colors.grey[850],
             child: Row(
@@ -36,17 +36,15 @@ class MapScreen extends StatelessWidget {
                   ),)
               ],
             ),
-          ),*//*
+          ),*/ /*
             ],
           ),
-          */Stack(
-              children: [
-
-                Container(
-                  width: double.maxFinite,
-                  height: double.maxFinite,
-                child: Map()),
-           ] ));
-
+          */
+            Stack(children: [
+          Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              child: MapScreen2()),
+        ]));
   }
 }
