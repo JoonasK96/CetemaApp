@@ -11,7 +11,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
-
 class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
@@ -22,28 +21,50 @@ class _MapState extends State<Map> {
   GoogleMapController _controller;
   Location _location = Location();
   LocationData _locationData;
+  StreamSubscription<LocationData> locationSubscription;
   bool visibility = false;
   double lat, lon;
   List _user = [];
   Timer timer;
+  bool isCameraLocked = false;
   PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
+  bool lockCameraOnUser = true;
   bool color = false;
   bool color2 = false;
   bool color3 = false;
   bool color4 = false;
   bool color5 = false;
   bool color6 = false;
+
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-    _location.onLocationChanged.listen((l) {
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15),
-        ),
-      );
+
+    locationSubscription = _location.onLocationChanged.listen((l) {
+        _controller.animateCamera(
+          CameraUpdate.newCameraPosition(
+              CameraPosition(
+                  target: LatLng(l.latitude, l.longitude), zoom: 15)
+          ),
+        );
+
+
+
+
+
     });
   }
+
+void cameraLock(isCameraLocked){
+  setState(() {
+
+  if(isCameraLocked == false){
+      locationSubscription.pause();
+    }else{
+      locationSubscription.resume();
+    }
+  });
+}
 
   MapType _currentMapType = MapType.normal;
 
@@ -105,16 +126,14 @@ class _MapState extends State<Map> {
     print(_nearest.first);
   }
 
-
-
   void bottomMenu(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter mystate) {
             return Container(
+              color: Colors.grey.shade300,
                 height: MediaQuery.of(context).size.height * .27,
                 child: Column(
                   children: <Widget>[
@@ -128,20 +147,23 @@ class _MapState extends State<Map> {
                                   ((MediaQuery.of(context).size.height * .12)),
                               width: MediaQuery.of(context).size.width * .3,
                               child: Card(
+
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 margin: EdgeInsets.all(10.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.grey,
+
+                                    color: Colors.red,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
-                                       color = !color;
+                                          color = !color;
                                         });
                                       },
                                       child: Padding(
@@ -155,7 +177,9 @@ class _MapState extends State<Map> {
                                             Icon(
                                               Icons.wine_bar,
                                               size: 40.0,
-                                              color: color ? Colors.blue : Colors.grey,
+                                              color: color
+                                                  ? Colors.blue
+                                                  : Colors.grey,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -167,7 +191,7 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: color ? Colors.blue : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -197,6 +221,7 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color2 = !color2;
@@ -213,7 +238,9 @@ class _MapState extends State<Map> {
                                             Icon(
                                               Icons.wine_bar,
                                               size: 40.0,
-                                              color: color2 ? Colors.blue : Colors.grey,
+                                              color: color2
+                                                  ? Colors.blue
+                                                  : Colors.grey,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -225,7 +252,7 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: color2 ? Colors.blue : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -259,6 +286,7 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color3 = !color3;
@@ -275,8 +303,9 @@ class _MapState extends State<Map> {
                                             Icon(
                                               Icons.wine_bar,
                                               size: 40.0,
-                                              color:
-                                              color3 ? Colors.blue : Colors.grey,
+                                              color: color3
+                                                  ? Colors.blue
+                                                  : Colors.grey,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -288,7 +317,7 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: color3 ? Colors.blue : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -318,6 +347,7 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color4 = !color4;
@@ -334,8 +364,9 @@ class _MapState extends State<Map> {
                                             Icon(
                                               Icons.wine_bar,
                                               size: 40.0,
-                                              color:
-                                              color4 ? Colors.blue : Colors.grey,
+                                              color: color4
+                                                  ? Colors.blue
+                                                  : Colors.grey,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -347,7 +378,7 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: color4 ? Colors.blue : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -381,9 +412,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
-                                         color5 = !color5;
+                                          color5 = !color5;
                                         });
                                       },
                                       child: Padding(
@@ -397,8 +429,9 @@ class _MapState extends State<Map> {
                                             Icon(
                                               Icons.wine_bar,
                                               size: 40.0,
-                                              color:
-                                              color5 ? Colors.blue : Colors.grey,
+                                              color: color5
+                                                  ? Colors.blue
+                                                  : Colors.grey,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -410,7 +443,7 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: color5 ? Colors.blue : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -440,6 +473,7 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color6 = !color6;
@@ -456,8 +490,9 @@ class _MapState extends State<Map> {
                                             Icon(
                                               Icons.wine_bar,
                                               size: 40.0,
-                                              color:
-                                              color6 ? Colors.blue : Colors.grey,
+                                              color: color6
+                                                  ? Colors.blue
+                                                  : Colors.grey,
                                             ),
                                             Column(
                                               crossAxisAlignment:
@@ -469,7 +504,7 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: color6 ? Colors.blue : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -500,7 +535,7 @@ class _MapState extends State<Map> {
         initialCameraPosition: CameraPosition(target: _initialcameraposition),
         onMapCreated: _onMapCreated,
         myLocationEnabled: true,
-        myLocationButtonEnabled: false,
+        myLocationButtonEnabled: true,
         padding: EdgeInsets.only(
           top: 0,
         ),
@@ -524,6 +559,18 @@ class _MapState extends State<Map> {
             ),
             FloatingActionButton(
               onPressed: _onMapTypeButtonPressed,
+              materialTapTargetSize: MaterialTapTargetSize.padded,
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.map, size: 36.0),
+            ),
+            FloatingActionButton(
+              onPressed: ((){
+                setState(() {
+                  isCameraLocked = !isCameraLocked;
+                      cameraLock(isCameraLocked);
+
+                });
+              }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
               backgroundColor: Colors.green,
               child: const Icon(Icons.map, size: 36.0),
@@ -566,13 +613,15 @@ class _MapState extends State<Map> {
         ),
       ),
       Positioned(
-          bottom: 0,
-          left: 100,
-          child: IconButton(
-              icon: FaIcon(FontAwesomeIcons.ellipsisV),
-              onPressed: () {
-                bottomMenu(context);
-              }))
+        bottom: 0,
+        left: 100,
+        child: IconButton(
+            icon: FaIcon(FontAwesomeIcons.ellipsisV),
+            onPressed: () {
+              bottomMenu(context);
+            }),
+      ),
+
     ]);
   }
 }
