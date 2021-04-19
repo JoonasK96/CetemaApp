@@ -46,7 +46,9 @@ class MapScreen extends StatelessWidget {
                   width: double.maxFinite,
                   height: double.maxFinite,
                 child: Map()),
-           ] ));
+
+
+    ], ));
 
   }
 }

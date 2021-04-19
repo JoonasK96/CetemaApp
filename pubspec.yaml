@@ -46,6 +46,7 @@ dependencies:
   image: ^3.0.2
   fl_chart: ^0.30.0
   cron: ^0.3.0
+  flutter_polyline_points: ^0.2.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
