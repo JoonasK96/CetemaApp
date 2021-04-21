@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/map_screen.dart';
+import 'package:logger/logger.dart';
+import 'api/MML_Api.dart';
 import 'components/navigation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,7 +11,7 @@ import 'dart:math';
 import 'package:flutter_app/screens/map_screen.dart';
 import 'package:cron/cron.dart';
 //void main() => runApp(MyApp()); //korvasin tän tolla alemmalla t. Otto
-
+final logger = Logger();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cron = Cron();
@@ -19,6 +22,7 @@ Future<void> main() async {
         FirebaseDatabase.instance.reference().child("testLocation");
     _someFirstRef.set("blabla test");
   });
+
   runApp(MyApp());
 }
 

@@ -47,9 +47,18 @@ dependencies:
   fl_chart: ^0.30.0
   cron: ^0.3.0
   flutter_polyline_points: ^0.2.4
+  retrofit: any
+  dio: ^3.0.10
+  built_value: ^7.1.0
+  json_annotation: ^3.1.0
+  logger: any
 dev_dependencies:
+  retrofit_generator: any
+  build_runner: ^1.10.0
+  json_serializable: ^3.5.0
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter_app/api/MML_Api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,8 @@ import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-
+import 'package:logger/logger.dart';
+import 'package:dio/dio.dart';
 class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
@@ -26,6 +28,7 @@ class _MapState extends State<Map> {
   double lat, lon;
   List _user = [];
   Timer timer;
+  final logger = Logger();
   bool isCameraLocked = false;
   PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
@@ -55,6 +58,19 @@ class _MapState extends State<Map> {
     });
   }
 
+
+
+  void api() async{
+    List data = [];
+    final dio = Dio(); // Provide a dio instance
+    dio.options.headers["Demo-Header"] =
+    "demo header"; // config your dio headers globally
+    final client = RestClient(dio);
+    await client.getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it)  => data.add(it));
+
+    client.getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
+    print(data);
+  }
 void cameraLock(isCameraLocked){
   setState(() {
 
@@ -619,6 +635,7 @@ void cameraLock(isCameraLocked){
             icon: FaIcon(FontAwesomeIcons.ellipsisV),
             onPressed: () {
               bottomMenu(context);
+              api();
             }),
       ),
 
