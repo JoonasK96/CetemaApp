@@ -9,24 +9,21 @@ abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
   @GET("/reverse")
-  Future<String> getPlaces(
-  @Query('lang') String lang,
-  @Query('sources') String sources,
-  @Query('boundary.circle.radius') String boundarycircleradius,
-  @Query('point.lon') String pointlon,
-  @Query('point.lat') String pointlat,
-  @Query('api-key') String apikey
-
-      );
+  Future<List<Task>> getTasks(
+      @Query('lang') String lang,
+      @Query('sources') String sources,
+      @Query('boundary.circle.radius') String boundarycircleradius,
+      @Query('point.lon') String pointlon,
+      @Query('point.lat') String pointlat,
+      @Query('api-key') String apikey);
 }
 
 @JsonSerializable()
-class Places {
+class Task {
+  String type;
 
-  List features;
+  Task({this.type});
 
-  Places({this.features});
-
-  factory Places.fromJson(Map<String, dynamic> json) => _$PlacesFromJson(json);
-  Map<String, dynamic> toJson() => _$PlacesToJson(this);
+  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
 }

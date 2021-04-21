@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_app/api/MML_Api.dart';
+import 'package:flutter_app/api/api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,16 +62,14 @@ class _MapState extends State<Map> {
 
 
   void api() async{
-    List data = [];
     final dio = Dio(); // Provide a dio instance
     dio.options.headers["Demo-Header"] =
     "demo header"; // config your dio headers globally
     final client = RestClient(dio);
-    await client.getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it)  => data.add(it));
-
-    client.getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
-    print(data);
-  }
+  //  await client.getTasks().then((it)  => data.add(it));
+    await  fetchPosts().then((it) => logger.i(it));
+  //  await client.getTasks("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => data.add(it));
+     }
 void cameraLock(isCameraLocked){
   setState(() {
 

@@ -6,14 +6,14 @@ part of 'MML_Api.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Places _$PlacesFromJson(Map<String, dynamic> json) {
-  return Places(
-    features: json['features'] as List,
+Task _$TaskFromJson(Map<String, dynamic> json) {
+  return Task(
+    type: json['type'] as String,
   );
 }
 
-Map<String, dynamic> _$PlacesToJson(Places instance) => <String, dynamic>{
-      'features': instance.features,
+Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
+      'type': instance.type,
     };
 
 // **************************************************************************
@@ -32,7 +32,7 @@ class _RestClient implements RestClient {
   String baseUrl;
 
   @override
-  Future<String> getPlaces(
+  Future<List<Task>> getTasks(
       lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
     ArgumentError.checkNotNull(lang, 'lang');
     ArgumentError.checkNotNull(sources, 'sources');
@@ -50,7 +50,7 @@ class _RestClient implements RestClient {
       r'api-key': apikey
     };
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<String>('/reverse',
+    final _result = await _dio.request<List<dynamic>>('/reverse',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -58,7 +58,9 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = _result.data;
-    return value;
+    var value = _result.data
+        .map((dynamic i) => Task.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return (value[0] as List);
   }
 }

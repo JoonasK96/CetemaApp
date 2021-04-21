@@ -52,9 +52,10 @@ dependencies:
   built_value: ^7.1.0
   json_annotation: ^3.1.0
   logger: any
+  http: any
 dev_dependencies:
   retrofit_generator: any
-  build_runner: ^1.10.0
+  build_runner: any
   json_serializable: ^3.5.0
   flutter_test:
     sdk: flutter
