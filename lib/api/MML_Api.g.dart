@@ -8,18 +8,12 @@ part of 'MML_Api.dart';
 
 Places _$PlacesFromJson(Map<String, dynamic> json) {
   return Places(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    avatar: json['avatar'] as String,
-    createdAt: json['createdAt'] as String,
+    features: json['features'] as List,
   );
 }
 
 Map<String, dynamic> _$PlacesToJson(Places instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'avatar': instance.avatar,
-      'createdAt': instance.createdAt,
+      'features': instance.features,
     };
 
 // **************************************************************************
@@ -29,7 +23,8 @@ Map<String, dynamic> _$PlacesToJson(Places instance) => <String, dynamic>{
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'avoin-paikkatieto.maanmittauslaitos.fi/geocoding/v1/pelias/';
+    baseUrl ??=
+        'https://avoin-paikkatieto.maanmittauslaitos.fi/geocoding/v1/pelias/';
   }
 
   final Dio _dio;
@@ -37,11 +32,25 @@ class _RestClient implements RestClient {
   String baseUrl;
 
   @override
-  Future<List<Places>> getTasks() async {
+  Future<String> getPlaces(
+      lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
+    ArgumentError.checkNotNull(lang, 'lang');
+    ArgumentError.checkNotNull(sources, 'sources');
+    ArgumentError.checkNotNull(boundarycircleradius, 'boundarycircleradius');
+    ArgumentError.checkNotNull(pointlon, 'pointlon');
+    ArgumentError.checkNotNull(pointlat, 'pointlat');
+    ArgumentError.checkNotNull(apikey, 'apikey');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lang': lang,
+      r'sources': sources,
+      r'boundary.circle.radius': boundarycircleradius,
+      r'point.lon': pointlon,
+      r'point.lat': pointlat,
+      r'api-key': apikey
+    };
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<List<dynamic>>('/reverse',
+    final _result = await _dio.request<String>('/reverse',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -49,9 +58,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    var value = _result.data
-        .map((dynamic i) => Places.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = _result.data;
     return value;
   }
 }
