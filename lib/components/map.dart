@@ -9,7 +9,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 class Map extends StatefulWidget {
   @override
@@ -27,7 +26,6 @@ class _MapState extends State<Map> {
   List _user = [];
   Timer timer;
   bool isCameraLocked = false;
-  PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
   bool lockCameraOnUser = true;
   bool color = false;
@@ -38,6 +36,7 @@ class _MapState extends State<Map> {
   bool color6 = false;
   Set<Marker> _markers = {};
   BitmapDescriptor mapMarker;
+  List<LatLng> polylineCoordinates = [];
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
@@ -614,8 +613,8 @@ class _MapState extends State<Map> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.map, size: 36.0),
+              backgroundColor: Colors.black,
+              child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
         ),
