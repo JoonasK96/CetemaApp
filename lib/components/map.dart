@@ -62,13 +62,18 @@ class _MapState extends State<Map> {
 
 
   void api() async{
-    final dio = Dio(); // Provide a dio instance
-    dio.options.headers["Demo-Header"] =
-    "demo header"; // config your dio headers globally
-    final client = RestClient(dio);
-  //  await client.getTasks().then((it)  => data.add(it));
-    await  fetchPosts().then((it) => logger.i(it));
-  //  await client.getTasks("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => data.add(it));
+    _locationData = await _location.getLocation();
+    List<dynamic> features = (await  fetchPosts("fi", "geographic-names", "1000", "${_locationData.longitude}", "${_locationData.latitude}", "4237121f-2d10-4722-bb95-3193dd546af5"));
+    var i = 0;
+    for(var index in features){
+      print(features[i]['properties']['label']);
+      print(features[i]['properties']['label:placeTypeDescription']);
+      print(features[i]['geometry']['coordinates']);
+      i++;
+    }
+
+    // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
+
      }
 void cameraLock(isCameraLocked){
   setState(() {

@@ -1,47 +1,66 @@
 
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 
-Future<List<Post>> fetchPosts( lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
-  ArgumentError.checkNotNull(lang, 'lang');
-  ArgumentError.checkNotNull(sources, 'sources');
-  ArgumentError.checkNotNull(boundarycircleradius, 'boundarycircleradius');
-  ArgumentError.checkNotNull(pointlon, 'pointlon');
-  ArgumentError.checkNotNull(pointlat, 'pointlat');
-  ArgumentError.checkNotNull(apikey, 'apikey');
-
-  final queryParameters = <String, dynamic>{
-    r"lang": lang,
-    r"sources": sources,
-    r"boundary.circle.radius": boundarycircleradius,
-    r"point.lon": pointlon,
-    r"point.lat": pointlat,
-    r"api-key": apikey
-  };
-  print(queryParameters);
-  http.Response response = await http.get(Uri.parse("https://avoin-paikkatieto.maanmittauslaitos.fi/geocoding/v1/pelias/reverse?$queryParameters")
+Future<List> fetchPosts( lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
 
 
-  );
-  var responseJson = json.decode(response.body);
-  print(responseJson);
-  return (responseJson['features'] as List)
-      .map((p) => Post.fromJson(p))
-      .toList();
+String url = "https://avoin-paikkatieto.maanmittauslaitos.fi/geocoding/v1/pelias/reverse?lang=$lang&sources=$sources&boundary.circle.radius=$boundarycircleradius&point.lon=$pointlon&point.lat=$pointlat&api-key=$apikey";
+print(url);
+
+  http.Response response = await http.get(Uri.parse(url));
+  if(response.statusCode == 200) {
+    Map<String, dynamic> map = json.decode(response.body);
+    List<dynamic> data = map["features"];
+   // print(data[0]["properties"]);
+
+
+    /*   var list = json.decode(response.body)['features'] as String;
+    var bla = json.decode(list)['name'];
+    List<String> features = list != null ? List.from(bla) : null;
+    print(data);
+    print("jalla $list");*/
+    //List<dynamic> products = data.map((i) =>
+    //    Features.fromJson(i)).toList();
+
+
+
+
+    return data;
+  } else {
+    throw Exception('failed to load');
+  }
+
 }
 
 class Post {
-  final String type;
+   String id;
+
 
   Post({
-    this.type
+    this.id
   });
+
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return new Post(
-      type: json['type'].toString(),
+      id: json['id'],
 
     );
   }
+}
+
+class Features {
+  final String id;
+
+  Features({this.id});
+  factory Features.fromJson(Map<String, dynamic> parsedJson){
+    return Features(
+        id:parsedJson['id'],
+
+    );
+  }
+
 }

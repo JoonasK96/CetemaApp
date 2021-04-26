@@ -8,12 +8,12 @@ part of 'MML_Api.dart';
 
 Task _$TaskFromJson(Map<String, dynamic> json) {
   return Task(
-    type: json['type'] as String,
+    json['features'] as List,
   );
 }
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
-      'type': instance.type,
+      'features': instance.features,
     };
 
 // **************************************************************************
@@ -32,7 +32,7 @@ class _RestClient implements RestClient {
   String baseUrl;
 
   @override
-  Future<List<Task>> getTasks(
+  Future<List<String>> getTasks(
       lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
     ArgumentError.checkNotNull(lang, 'lang');
     ArgumentError.checkNotNull(sources, 'sources');
@@ -58,9 +58,7 @@ class _RestClient implements RestClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    var value = _result.data
-        .map((dynamic i) => Task.fromJson(i as Map<String, dynamic>))
-        .toList();
-    return (value[0] as List);
+    final value = _result.data.cast<String>();
+    return value;
   }
 }
