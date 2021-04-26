@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_app/api/MML_Api.dart';
+import 'package:flutter_app/components/firebase.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,13 @@ import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
+
 class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
+
+GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
 
 class _MapState extends State<Map> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
@@ -44,43 +48,40 @@ class _MapState extends State<Map> {
     _controller = _cntlr;
 
     locationSubscription = _location.onLocationChanged.listen((l) {
-        _controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(l.latitude, l.longitude), zoom: 15)
-          ),
-        );
-
-
-
-
-
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15)),
+      );
     });
   }
 
-
-
-  void api() async{
+  void api() async {
     List data = [];
     final dio = Dio(); // Provide a dio instance
     dio.options.headers["Demo-Header"] =
-    "demo header"; // config your dio headers globally
+        "demo header"; // config your dio headers globally
     final client = RestClient(dio);
-    await client.getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it)  => data.add(it));
+    await client
+        .getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668",
+            "4237121f-2d10-4722-bb95-3193dd546af5")
+        .then((it) => data.add(it));
 
-    client.getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
+    client
+        .getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668",
+            "4237121f-2d10-4722-bb95-3193dd546af5")
+        .then((it) => logger.i(it));
     print(data);
   }
-void cameraLock(isCameraLocked){
-  setState(() {
 
-  if(isCameraLocked == false){
-      locationSubscription.pause();
-    }else{
-      locationSubscription.resume();
-    }
-  });
-}
+  void cameraLock(isCameraLocked) {
+    setState(() {
+      if (isCameraLocked == false) {
+        locationSubscription.pause();
+      } else {
+        locationSubscription.resume();
+      }
+    });
+  }
 
   MapType _currentMapType = MapType.normal;
 
@@ -123,6 +124,7 @@ void cameraLock(isCameraLocked){
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
+    //return _locationData;
   }
 
   void _countDistance() {
@@ -149,7 +151,7 @@ void cameraLock(isCameraLocked){
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter mystate) {
             return Container(
-              color: Colors.grey.shade300,
+                color: Colors.grey.shade300,
                 height: MediaQuery.of(context).size.height * .27,
                 child: Column(
                   children: <Widget>[
@@ -163,20 +165,21 @@ void cameraLock(isCameraLocked){
                                   ((MediaQuery.of(context).size.height * .12)),
                               width: MediaQuery.of(context).size.width * .3,
                               child: Card(
-
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 margin: EdgeInsets.all(10.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-
                                     color: Colors.red,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color = !color;
@@ -207,7 +210,9 @@ void cameraLock(isCameraLocked){
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: color ? Colors.blue : Colors.grey,
+                                                    color: color
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -237,7 +242,10 @@ void cameraLock(isCameraLocked){
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color2 = !color2;
@@ -268,7 +276,9 @@ void cameraLock(isCameraLocked){
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: color2 ? Colors.blue : Colors.grey,
+                                                    color: color2
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -302,7 +312,10 @@ void cameraLock(isCameraLocked){
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color3 = !color3;
@@ -333,7 +346,9 @@ void cameraLock(isCameraLocked){
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: color3 ? Colors.blue : Colors.grey,
+                                                    color: color3
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -363,7 +378,10 @@ void cameraLock(isCameraLocked){
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color4 = !color4;
@@ -394,7 +412,9 @@ void cameraLock(isCameraLocked){
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: color4 ? Colors.blue : Colors.grey,
+                                                    color: color4
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -428,7 +448,10 @@ void cameraLock(isCameraLocked){
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color5 = !color5;
@@ -459,7 +482,9 @@ void cameraLock(isCameraLocked){
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: color5 ? Colors.blue : Colors.grey,
+                                                    color: color5
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -489,7 +514,10 @@ void cameraLock(isCameraLocked){
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color6 = !color6;
@@ -520,7 +548,9 @@ void cameraLock(isCameraLocked){
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: color6 ? Colors.blue : Colors.grey,
+                                                    color: color6
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -580,11 +610,10 @@ void cameraLock(isCameraLocked){
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
-              onPressed: ((){
+              onPressed: (() {
                 setState(() {
                   isCameraLocked = !isCameraLocked;
-                      cameraLock(isCameraLocked);
-
+                  cameraLock(isCameraLocked);
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
@@ -613,7 +642,8 @@ void cameraLock(isCameraLocked){
                     actions: [
                       TextButton(
                           onPressed: () {
-                            addUsers();
+                            addUsers(); //ehkä muutaki? ainaki notification
+                            widgetKey.currentState.sendHelpNotification();
                           },
                           child: Text("YES")),
                       TextButton(
@@ -638,7 +668,6 @@ void cameraLock(isCameraLocked){
               api();
             }),
       ),
-
     ]);
   }
 }
