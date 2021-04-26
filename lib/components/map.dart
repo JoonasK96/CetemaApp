@@ -14,6 +14,7 @@ import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_app/components/smallWaetherBox.dart';
 class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
@@ -562,6 +563,11 @@ void cameraLock(isCameraLocked){
         mapType: _currentMapType,
       ),
       Positioned(
+          top: 500,
+          left: 60,
+          child:
+          WeatherBox()),
+      Positioned(
         bottom: 10,
         left: 4,
         child: Column(
@@ -595,6 +601,7 @@ void cameraLock(isCameraLocked){
               backgroundColor: Colors.green,
               child: const Icon(Icons.map, size: 36.0),
             ),
+
           ],
         ),
       ),

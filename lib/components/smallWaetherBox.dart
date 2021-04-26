@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
@@ -45,12 +46,33 @@ class _WeatherBoxState extends State<WeatherBox> {
     weather = w.weatherConditionCode;
     temp = w.temperature;
     icon = w.weatherIcon;
+    print(icon);
 
     debugPrint('sää: $weather');
   }
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      width: 60,
+      height: 60,
+
+      decoration: BoxDecoration(
+
+        color: Colors.grey.shade300,
+        shape: BoxShape.circle
+
+      ),
+
+      child:Center( child:
+        Column(
+        children: [
+      Wrap(
+        children: [
+          Image.network("https://openweathermap.org/img/w/" + icon +".png", height: 35, fit: BoxFit.fitWidth,),
+          Text("${temp.toString().split(" ")[0]} °C", style: TextStyle(fontSize: 15),),
+        ],
+      ),],))
+    );
 
 
 }}
