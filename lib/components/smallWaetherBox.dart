@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
@@ -20,12 +20,14 @@ class _WeatherBoxState extends State<WeatherBox> {
   int weather;
   Temperature temp;
   String icon;
+  bool isLoaded = true;
+
 
 
   @override
   void initState() {
     super.initState();
-    ws = new WeatherFactory(key);
+   ws = new WeatherFactory(key);
     getLocation();
   }
 
@@ -49,10 +51,14 @@ class _WeatherBoxState extends State<WeatherBox> {
     print(icon);
 
     debugPrint('sää: $weather');
+setState(() {
+    isLoaded = false;
+});
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
+
+    return  isLoaded? CircularProgressIndicator() : Container(
       width: 60,
       height: 60,
 
@@ -63,7 +69,7 @@ class _WeatherBoxState extends State<WeatherBox> {
 
       ),
 
-      child:Center( child:
+      child:  Center( child:
         Column(
         children: [
       Wrap(

@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter_app/api/MML_Api.dart';
 import 'package:flutter_app/api/api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +10,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 class Map extends StatefulWidget {
   @override
@@ -146,6 +142,11 @@ void cameraLock(isCameraLocked){
     _nearest.sort();
     print(_nearest.first);
   }
+
+  Future<Widget> saaPallero() async{
+    return WeatherBox();
+  }
+
 
   void bottomMenu(context) {
     showModalBottomSheet(
@@ -556,7 +557,7 @@ void cameraLock(isCameraLocked){
         initialCameraPosition: CameraPosition(target: _initialcameraposition),
         onMapCreated: _onMapCreated,
         myLocationEnabled: true,
-        myLocationButtonEnabled: true,
+        myLocationButtonEnabled: false,
         padding: EdgeInsets.only(
           top: 0,
         ),
@@ -565,8 +566,7 @@ void cameraLock(isCameraLocked){
       Positioned(
           top: 500,
           left: 60,
-          child:
-          WeatherBox()),
+          child:  WeatherBox()),
       Positioned(
         bottom: 10,
         left: 4,
