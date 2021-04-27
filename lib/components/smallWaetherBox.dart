@@ -4,8 +4,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-
-
 class WeatherBox extends StatefulWidget {
   @override
   _WeatherBoxState createState() => _WeatherBoxState();
@@ -21,7 +19,6 @@ class _WeatherBoxState extends State<WeatherBox> {
   Temperature temp;
   String icon;
 
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +33,6 @@ class _WeatherBoxState extends State<WeatherBox> {
     lon = position.longitude;
     debugPrint('FYI: $lat');
     getWeather();
-
   }
 
   void getWeather() async {
@@ -50,29 +46,31 @@ class _WeatherBoxState extends State<WeatherBox> {
 
     debugPrint('sää: $weather');
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 60,
-      height: 60,
-
-      decoration: BoxDecoration(
-
-        color: Colors.grey.shade300,
-        shape: BoxShape.circle
-
-      ),
-
-      child:Center( child:
-        Column(
-        children: [
-      Wrap(
-        children: [
-          Image.network("https://openweathermap.org/img/w/" + icon +".png", height: 35, fit: BoxFit.fitWidth,),
-          Text("${temp.toString().split(" ")[0]} °C", style: TextStyle(fontSize: 15),),
-        ],
-      ),],))
-    );
-
-
-}}
+        width: 60,
+        height: 60,
+        decoration:
+            BoxDecoration(color: Colors.grey.shade300, shape: BoxShape.circle),
+        child: Center(
+            child: Column(
+          children: [
+            Wrap(
+              children: [
+                Image.network(
+                  "https://openweathermap.org/img/w/" + icon + ".png",
+                  height: 35,
+                  fit: BoxFit.fitWidth,
+                ),
+                Text(
+                  "${temp.toString().split(" ")[0]} °C",
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+          ],
+        )));
+  }
+}
