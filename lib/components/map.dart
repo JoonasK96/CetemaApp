@@ -70,6 +70,17 @@ class _MapState extends State<Map> {
       print(features[i]['properties']['label:placeTypeDescription']);
       print(features[i]['geometry']['coordinates']);
       i++;
+
+      setState(() {
+        _markers.add(Marker(
+            markerId: MarkerId('id-1'),
+            position: LatLng(60.18, 24.93),
+            icon: mapMarker,
+            infoWindow: InfoWindow(
+              title: 'eka',
+              snippet: 'toka',
+            )));
+      });
     }
 
     // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
@@ -80,7 +91,7 @@ class _MapState extends State<Map> {
         ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
   }
 
-  void addMarkers() {
+/*  void addMarkers() {
     setState(() {
       _markers.add(Marker(
           markerId: MarkerId('id-1'),
@@ -91,7 +102,7 @@ class _MapState extends State<Map> {
             snippet: 'hello',
           )));
     });
-  }
+  } */
 
   @override
   void initState() {
@@ -118,7 +129,6 @@ class _MapState extends State<Map> {
           ? MapType.satellite
           : MapType.normal;
     });
-    addMarkers();
   }
 
   void _compassOnPress() {
@@ -645,8 +655,8 @@ class _MapState extends State<Map> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.map, size: 36.0),
+              backgroundColor: Colors.black,
+              child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
         ),
