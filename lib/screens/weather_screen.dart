@@ -4,21 +4,19 @@ import 'package:flutter_app/components/weather_card.dart';
 
 class WeatherScreen extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Column(
-
       children: <Widget>[
         Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GetWeather(),
-          /*  Container(
+            /*  Container(
              width: double.infinity,
              height: 306,
              child: GetForecast() ,
            ),*/
-           //
+            //
           ],
         )
       ],

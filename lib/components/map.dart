@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter_app/api/MML_Api.dart';
 import 'package:flutter_app/api/api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 class Map extends StatefulWidget {
   @override
@@ -37,10 +41,11 @@ class _MapState extends State<Map> {
   bool color4 = false;
   bool color5 = false;
   bool color6 = false;
+  Set<Marker> _markers = {};
+  BitmapDescriptor mapMarker;
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-
     locationSubscription = _location.onLocationChanged.listen((l) {
         _controller.animateCamera(
           CameraUpdate.newCameraPosition(
@@ -67,21 +72,55 @@ class _MapState extends State<Map> {
       print(features[i]['properties']['label:placeTypeDescription']);
       print(features[i]['geometry']['coordinates']);
       i++;
+
+      setState(() {
+        _markers.add(Marker(
+            markerId: MarkerId('id-1'),
+            position: LatLng(60.18, 24.93),
+            icon: mapMarker,
+            infoWindow: InfoWindow(
+              title: 'eka',
+              snippet: 'toka',
+            )));
+      });
     }
 
     // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
+  }
 
-     }
-void cameraLock(isCameraLocked){
-  setState(() {
+  void setCustomMarker() async {
+    mapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
+  }
 
-  if(isCameraLocked == false){
-      locationSubscription.pause();
-    }else{
-      locationSubscription.resume();
-    }
-  });
-}
+/*  void addMarkers() {
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId('id-1'),
+          position: LatLng(60.18, 24.93),
+          icon: mapMarker,
+          infoWindow: InfoWindow(
+            title: 'joku',
+            snippet: 'hello',
+          )));
+    });
+  } */
+
+  @override
+  void initState() {
+    super.initState();
+    setCustomMarker();
+  }
+
+  void cameraLock(isCameraLocked) {
+    setState(() {
+      if (isCameraLocked == false) {
+        locationSubscription.pause();
+      } else {
+        locationSubscription.resume();
+      }
+    });
+  }
 
   MapType _currentMapType = MapType.normal;
 
@@ -143,11 +182,6 @@ void cameraLock(isCameraLocked){
     print(_nearest.first);
   }
 
-  Future<Widget> saaPallero() async{
-    return WeatherBox();
-  }
-
-
   void bottomMenu(context) {
     showModalBottomSheet(
         context: context,
@@ -169,14 +203,12 @@ void cameraLock(isCameraLocked){
                                   ((MediaQuery.of(context).size.height * .12)),
                               width: MediaQuery.of(context).size.width * .3,
                               child: Card(
-
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 margin: EdgeInsets.all(10.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-
                                     color: Colors.red,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -558,6 +590,7 @@ void cameraLock(isCameraLocked){
         onMapCreated: _onMapCreated,
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
+        markers: _markers,
         padding: EdgeInsets.only(
           top: 0,
         ),
@@ -598,10 +631,9 @@ void cameraLock(isCameraLocked){
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.map, size: 36.0),
+              backgroundColor: Colors.black,
+              child: const Icon(Icons.api_sharp, size: 36.0),
             ),
-
           ],
         ),
       ),
@@ -649,7 +681,6 @@ void cameraLock(isCameraLocked){
               api();
             }),
       ),
-
     ]);
   }
 }

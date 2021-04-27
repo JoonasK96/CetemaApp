@@ -7,7 +7,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-
 class GetForecast extends StatefulWidget {
   @override
   _ForecastState createState() => _ForecastState();
@@ -19,7 +18,6 @@ class _ForecastState extends State<GetForecast> {
   double lat, lon;
   List<Weather> forecastData = [];
   String temp;
-
 
   @override
   void initState() {
@@ -39,50 +37,40 @@ class _ForecastState extends State<GetForecast> {
 
   void queryForecast() async {
     List<Weather> forecasts =
-    (await ws.fiveDayForecastByLocation(lat, lon)).cast<Weather>();
+        (await ws.fiveDayForecastByLocation(lat, lon)).cast<Weather>();
     forecastData = forecasts;
     print('$forecasts');
     temp = forecastData[1].temperature.toString();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-
         Stack(
-        children: [
-
-          AspectRatio(
-          aspectRatio: 1.7,
-
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(18),
+          children: [
+            AspectRatio(
+              aspectRatio: 1.7,
+              child: Container(
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(18),
+                    ),
+                    color: Color(0xff232d37)),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      right: 18.0, left: 12.0, top: 24, bottom: 12),
+                  child: LineChart(avgData()),
                 ),
-                color: Color(0xff232d37)),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
-              child: LineChart(
-                 avgData()
               ),
             ),
-          ),
+          ],
         ),
-
+        Container(child: forecastDays()),
       ],
-        ),
-        Container(
-
-      child: forecastDays()
-        ),
-      ],
-
     );
   }
+
   LineChartData avgData() {
     return LineChartData(
       lineTouchData: LineTouchData(enabled: false),
@@ -107,11 +95,10 @@ class _ForecastState extends State<GetForecast> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) =>
-          const TextStyle(color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 10,
-
+          getTextStyles: (value) => const TextStyle(
+            color: Color(0xff68737d),
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
           ),
           getTitles: (value) {
             switch (value.toInt()) {
@@ -129,7 +116,6 @@ class _ForecastState extends State<GetForecast> {
                 return 'LA';
               case 7:
                 return 'SU';
-
             }
             return '';
           },
@@ -172,10 +158,10 @@ class _ForecastState extends State<GetForecast> {
           reservedSize: 28,
           margin: 12,
         ),
-
       ),
-      borderData:
-      FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d), width: 1)),
+      borderData: FlBorderData(
+          show: true,
+          border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
       maxX: 7,
       minY: 0,
@@ -203,7 +189,9 @@ class _ForecastState extends State<GetForecast> {
             show: false,
           ),
           belowBarData: BarAreaData(show: true, colors: [
-            ColorTween(begin: Colors.blue, end: Colors.blue).lerp(0.2).withOpacity(0.2),
+            ColorTween(begin: Colors.blue, end: Colors.blue)
+                .lerp(0.2)
+                .withOpacity(0.2),
           ]),
         ),
       ],
@@ -212,13 +200,9 @@ class _ForecastState extends State<GetForecast> {
 
   ListView forecastDays() {
     return ListView(
-     // Text(forecastData[2].temperature.toString().split(" ")[0])
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-
-             ],
-                );
-
+      // Text(forecastData[2].temperature.toString().split(" ")[0])
+      scrollDirection: Axis.horizontal,
+      children: <Widget>[],
+    );
   }
 }
-
