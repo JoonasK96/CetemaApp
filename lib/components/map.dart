@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_app/api/MML_Api.dart';
-import 'package:flutter_app/components/firebase.dart';
+import 'package:flutter_app/api/api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_app/components/smallWaetherBox.dart';
 
 class Map extends StatefulWidget {
   @override
@@ -43,10 +44,11 @@ class _MapState extends State<Map> {
   bool color4 = false;
   bool color5 = false;
   bool color6 = false;
+  Set<Marker> _markers = {};
+  BitmapDescriptor mapMarker;
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
-
     locationSubscription = _location.onLocationChanged.listen((l) {
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -56,21 +58,58 @@ class _MapState extends State<Map> {
   }
 
   void api() async {
-    List data = [];
-    final dio = Dio(); // Provide a dio instance
-    dio.options.headers["Demo-Header"] =
-        "demo header"; // config your dio headers globally
-    final client = RestClient(dio);
-    await client
-        .getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668",
-            "4237121f-2d10-4722-bb95-3193dd546af5")
-        .then((it) => data.add(it));
+    _locationData = await _location.getLocation();
+    List<dynamic> features = (await fetchPosts(
+        "fi",
+        "geographic-names",
+        "1000",
+        "${_locationData.longitude}",
+        "${_locationData.latitude}",
+        "4237121f-2d10-4722-bb95-3193dd546af5"));
+    var i = 0;
+    for (var index in features) {
+      print(features[i]['properties']['label']);
+      print(features[i]['properties']['label:placeTypeDescription']);
+      print(features[i]['geometry']['coordinates']);
+      i++;
 
-    client
-        .getPlaces("fi", "geographic-names", "1000", "24.9432", "60.1668",
-            "4237121f-2d10-4722-bb95-3193dd546af5")
-        .then((it) => logger.i(it));
-    print(data);
+      setState(() {
+        _markers.add(Marker(
+            markerId: MarkerId('id-1'),
+            position: LatLng(60.18, 24.93),
+            icon: mapMarker,
+            infoWindow: InfoWindow(
+              title: 'eka',
+              snippet: 'toka',
+            )));
+      });
+    }
+
+    // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
+  }
+
+  void setCustomMarker() async {
+    mapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
+  }
+
+/*  void addMarkers() {
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId('id-1'),
+          position: LatLng(60.18, 24.93),
+          icon: mapMarker,
+          infoWindow: InfoWindow(
+            title: 'joku',
+            snippet: 'hello',
+          )));
+    });
+  } */
+
+  @override
+  void initState() {
+    super.initState();
+    setCustomMarker();
   }
 
   void cameraLock(isCameraLocked) {
@@ -581,12 +620,14 @@ class _MapState extends State<Map> {
         initialCameraPosition: CameraPosition(target: _initialcameraposition),
         onMapCreated: _onMapCreated,
         myLocationEnabled: true,
-        myLocationButtonEnabled: true,
+        myLocationButtonEnabled: false,
+        markers: _markers,
         padding: EdgeInsets.only(
           top: 0,
         ),
         mapType: _currentMapType,
       ),
+      Positioned(top: 500, left: 60, child: WeatherBox()),
       Positioned(
         bottom: 10,
         left: 4,
@@ -617,8 +658,8 @@ class _MapState extends State<Map> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.map, size: 36.0),
+              backgroundColor: Colors.black,
+              child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
         ),
@@ -643,7 +684,7 @@ class _MapState extends State<Map> {
                       TextButton(
                           onPressed: () {
                             addUsers(); //ehkä muutaki? ainaki notification
-                            widgetKey.currentState.sendHelpNotification();
+                            //widgetKey.currentState.sendHelpNotification();
                           },
                           child: Text("YES")),
                       TextButton(
