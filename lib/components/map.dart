@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
@@ -34,6 +35,7 @@ class _MapState extends State<Map> {
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
+  PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
   bool lockCameraOnUser = true;
   bool color = false;
@@ -65,10 +67,15 @@ class _MapState extends State<Map> {
         "${_locationData.latitude}",
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
-    setState(() {
-      for (var index in features) {
+    for (var index in features) {
+      print(features[i]['properties']['label']);
+      print(features[i]['properties']['label:placeTypeDescription']);
+      print(features[i]['geometry']['coordinates']);
+      i++;
+
+      setState(() {
         _markers.add(Marker(
-            markerId: MarkerId(features[i]['properties']['label']),
+            markerId: MarkerId('properties'),
             position: LatLng(features[i]['geometry']['coordinates'][1],
                 features[i]['geometry']['coordinates'][0]),
             icon: mapMarker,
@@ -76,19 +83,29 @@ class _MapState extends State<Map> {
               title: features[i]['properties']['label'],
               snippet: features[i]['properties']['label:placeTypeDescription'],
             )));
+      });
+    }
 
-        print(features[i]['properties']['label']);
-        print(features[i]['properties']['label:placeTypeDescription']);
-        print(features[i]['geometry']['coordinates']);
-        i++;
-      }
-    });
+    // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
   }
 
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
   }
+
+/*  void addMarkers() {
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId('id-1'),
+          position: LatLng(60.18, 24.93),
+          icon: mapMarker,
+          infoWindow: InfoWindow(
+            title: 'joku',
+            snippet: 'hello',
+          )));
+    });
+  } */
 
   @override
   void initState() {
