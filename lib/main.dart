@@ -30,6 +30,7 @@ Future<void> main() async {
     //var juuh = new FirebaseClass();
     //var locationnnnn = new
     //widgetKey.currentState.sendLocation();
+    backend.getLocation();
     backend.sendLocation();
   });
 

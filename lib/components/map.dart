@@ -15,6 +15,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
+
 class Map extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
@@ -47,38 +48,36 @@ class _MapState extends State<Map> {
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     locationSubscription = _location.onLocationChanged.listen((l) {
-        _controller.animateCamera(
-          CameraUpdate.newCameraPosition(
-              CameraPosition(
-                  target: LatLng(l.latitude, l.longitude), zoom: 15)
-          ),
-        );
-
-
-
-
-
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15)),
+      );
     });
   }
 
-
-
-  void api() async{
+  void api() async {
     _locationData = await _location.getLocation();
-    List<dynamic> features = (await  fetchPosts("fi", "geographic-names", "1000", "${_locationData.longitude}", "${_locationData.latitude}", "4237121f-2d10-4722-bb95-3193dd546af5"));
+    List<dynamic> features = (await fetchPosts(
+        "fi",
+        "geographic-names",
+        "1000",
+        "${_locationData.longitude}",
+        "${_locationData.latitude}",
+        "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
     setState(() {
-    for(var index in features){
-      _markers.add(Marker(
-          markerId: MarkerId(features[i]['properties']['label']),
-          position: LatLng(features[i]['geometry']['coordinates'][1], features[i]['geometry']['coordinates'][0]),
-          icon: mapMarker,
-          infoWindow: InfoWindow(
-            title: features[i]['properties']['label'],
-            snippet: features[i]['properties']['label:placeTypeDescription'],
-          )));
-      i++;
-    }
+      for (var index in features) {
+        _markers.add(Marker(
+            markerId: MarkerId(features[i]['properties']['label']),
+            position: LatLng(features[i]['geometry']['coordinates'][1],
+                features[i]['geometry']['coordinates'][0]),
+            icon: mapMarker,
+            infoWindow: InfoWindow(
+              title: features[i]['properties']['label'],
+              snippet: features[i]['properties']['label:placeTypeDescription'],
+            )));
+        i++;
+      }
     });
 
     // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
@@ -138,24 +137,6 @@ class _MapState extends State<Map> {
     });
   }
 
-  void addUsers() async {
-    var user1 = new User();
-    user1.longitude = 56.5;
-    user1.latitude = 4.5;
-    var user2 = new User();
-    user2.longitude = 60.5;
-    user2.latitude = 10.5;
-    var user3 = new User();
-    user3.longitude = 100.5;
-    user3.latitude = 20.5;
-
-    _user.add(user1);
-    _user.add(user2);
-    _user.add(user3);
-
-    getLocation();
-  }
-
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
@@ -185,7 +166,7 @@ class _MapState extends State<Map> {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter mystate) {
             return Container(
-              color: Colors.grey.shade300,
+                color: Colors.grey.shade300,
                 height: MediaQuery.of(context).size.height * .27,
                 child: Column(
                   children: <Widget>[
@@ -210,7 +191,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color = !color;
@@ -241,7 +225,9 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: color ? Colors.blue : Colors.grey,
+                                                    color: color
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -271,7 +257,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color2 = !color2;
@@ -302,7 +291,9 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: color2 ? Colors.blue : Colors.grey,
+                                                    color: color2
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -336,7 +327,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color3 = !color3;
@@ -367,7 +361,9 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: color3 ? Colors.blue : Colors.grey,
+                                                    color: color3
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -397,7 +393,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color4 = !color4;
@@ -428,7 +427,9 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: color4 ? Colors.blue : Colors.grey,
+                                                    color: color4
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -462,7 +463,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color5 = !color5;
@@ -493,7 +497,9 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "Dangers",
                                                   style: TextStyle(
-                                                    color: color5 ? Colors.blue : Colors.grey,
+                                                    color: color5
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -523,7 +529,10 @@ class _MapState extends State<Map> {
                                   ),
                                   child: ButtonTheme(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade100)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.grey.shade100)),
                                       onPressed: () {
                                         mystate(() {
                                           color6 = !color6;
@@ -554,7 +563,9 @@ class _MapState extends State<Map> {
                                                 Text(
                                                   "virkistys",
                                                   style: TextStyle(
-                                                    color: color6 ? Colors.blue : Colors.grey,
+                                                    color: color6
+                                                        ? Colors.blue
+                                                        : Colors.grey,
                                                     fontSize: 12.0,
                                                   ),
                                                 ),
@@ -592,10 +603,7 @@ class _MapState extends State<Map> {
         ),
         mapType: _currentMapType,
       ),
-      Positioned(
-          top: 500,
-          left: 60,
-          child:  WeatherBox()),
+      Positioned(top: 500, left: 60, child: WeatherBox()),
       Positioned(
         bottom: 10,
         left: 4,
@@ -619,11 +627,10 @@ class _MapState extends State<Map> {
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
-              onPressed: ((){
+              onPressed: (() {
                 setState(() {
                   isCameraLocked = !isCameraLocked;
-                      cameraLock(isCameraLocked);
-
+                  cameraLock(isCameraLocked);
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
