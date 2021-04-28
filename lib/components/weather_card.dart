@@ -2,8 +2,8 @@ import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:intl/intl.dart';
+import 'package:cron/cron.dart';
 
 class GetWeather extends StatefulWidget {
   @override
@@ -48,6 +48,12 @@ class _WeatherState extends State<GetWeather> {
     weatherImg();
     debugPrint('sää: $weather');
   }
+ void reload() async{ final cron = Cron();
+  cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+  print('every minute, minute passes');
+
+
+});}
   
   AssetImage weatherImg() {
     int num = weather;
@@ -102,7 +108,10 @@ class _WeatherState extends State<GetWeather> {
         width: double.infinity,
         decoration: BoxDecoration(
        // color: Colors.grey[400],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10)
+          ),
           image: DecorationImage(
 
             image: weatherImg(),
@@ -140,7 +149,7 @@ class _WeatherState extends State<GetWeather> {
                     height: 5.0,
                   ),
                   Text(
-                    '$date',
+                    DateFormat('E, ha').format(DateTime.now()),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12.0,
