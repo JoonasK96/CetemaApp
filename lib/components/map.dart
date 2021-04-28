@@ -21,8 +21,6 @@ class Map extends StatefulWidget {
   _MapState createState() => _MapState();
 }
 
-GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
-
 class _MapState extends State<Map> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
   GoogleMapController _controller;
@@ -67,23 +65,20 @@ class _MapState extends State<Map> {
         "${_locationData.latitude}",
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
-    for (var index in features) {
-      print(features[i]['properties']['label']);
-      print(features[i]['properties']['label:placeTypeDescription']);
-      print(features[i]['geometry']['coordinates']);
-      i++;
-
-      setState(() {
+    setState(() {
+      for (var index in features) {
         _markers.add(Marker(
-            markerId: MarkerId('id-1'),
-            position: LatLng(60.18, 24.93),
+            markerId: MarkerId(features[i]['properties']['label']),
+            position: LatLng(features[i]['geometry']['coordinates'][1],
+                features[i]['geometry']['coordinates'][0]),
             icon: mapMarker,
             infoWindow: InfoWindow(
-              title: 'eka',
-              snippet: 'toka',
+              title: features[i]['properties']['label'],
+              snippet: features[i]['properties']['label:placeTypeDescription'],
             )));
-      });
-    }
+        i++;
+      }
+    });
 
     // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
   }
@@ -145,7 +140,6 @@ class _MapState extends State<Map> {
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
-    //return _locationData;
   }
 
   void _countDistance() {
@@ -665,8 +659,7 @@ class _MapState extends State<Map> {
                     actions: [
                       TextButton(
                           onPressed: () {
-                            //addUsers(); //ehkä muutaki? ainaki notification
-                            //widgetKey.currentState.sendHelpNotification();
+                            addUsers();
                           },
                           child: Text("YES")),
                       TextButton(

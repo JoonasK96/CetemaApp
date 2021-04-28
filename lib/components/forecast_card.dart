@@ -2,11 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/components/weatherValues.dart';
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
-
+import 'package:intl/intl.dart';
 class GetForecast extends StatefulWidget {
   @override
   _ForecastState createState() => _ForecastState();
@@ -18,13 +19,14 @@ class _ForecastState extends State<GetForecast> {
   double lat, lon;
   List<Weather> forecastData = [];
   String temp;
-
+  bool weatherValuesLoading = true;
   @override
   void initState() {
     super.initState();
-    ws = new WeatherFactory(key);
+    ws = new WeatherFactory(key, language: Language.FINNISH);
     getLocation();
   }
+
 
   void getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -41,6 +43,9 @@ class _ForecastState extends State<GetForecast> {
     forecastData = forecasts;
     print('$forecasts');
     temp = forecastData[1].temperature.toString();
+    setState(() {
+      weatherValuesLoading = false;
+    });
   }
 
   @override
@@ -53,9 +58,7 @@ class _ForecastState extends State<GetForecast> {
               aspectRatio: 1.7,
               child: Container(
                 decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
+
                     color: Color(0xff232d37)),
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -66,7 +69,7 @@ class _ForecastState extends State<GetForecast> {
             ),
           ],
         ),
-        Container(child: forecastDays()),
+        Container(child: weatherValuesLoading? CircularProgressIndicator() : forecastDays()),
       ],
     );
   }
@@ -198,11 +201,33 @@ class _ForecastState extends State<GetForecast> {
     );
   }
 
-  ListView forecastDays() {
-    return ListView(
-      // Text(forecastData[2].temperature.toString().split(" ")[0])
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[],
+  Container forecastDays() {
+
+    return Container(
+      height: 82,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: this.forecastData.length,
+        separatorBuilder: (context, index) => Divider(
+          height: 100,
+          color: Colors.white,
+        ),
+        padding: EdgeInsets.only(left: 10, right: 10),
+        itemBuilder: (context, index) {
+          final item = this.forecastData[index];
+          return Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Center(
+                child: WeatherValues(
+                  DateFormat('E, ha').format(
+                      DateTime.parse(item.date.toString())),
+                  '${item.temperature.toString().split(" ")[0]}°C',
+                  iconData: "https://openweathermap.org/img/w/" + item.weatherIcon +".png",
+                )),
+          );
+        },
+      ),
     );
   }
 }
