@@ -67,10 +67,15 @@ class _MapState extends State<Map> {
         "${_locationData.latitude}",
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
+<<<<<<< HEAD
     for (var index in features) {
       i++;
 
       setState(() {
+=======
+    setState(() {
+      for (var index in features) {
+>>>>>>> 61cefbfe516a0180354d2f563b0fd37ffa081ad8
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
             position: LatLng(features[i]['geometry']['coordinates'][1],
@@ -80,8 +85,14 @@ class _MapState extends State<Map> {
               title: features[i]['properties']['label'],
               snippet: features[i]['properties']['label:placeTypeDescription'],
             )));
+<<<<<<< HEAD
       });
     }
+=======
+        i++;
+      }
+    });
+>>>>>>> 61cefbfe516a0180354d2f563b0fd37ffa081ad8
 
     // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
   }

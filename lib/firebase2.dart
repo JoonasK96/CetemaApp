@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,25 +20,31 @@ class FirebaseClass2 {
   final testLocation = "testing1";
 
   var retrievedLocation;
-  User userObject = User();
 
   void sendLocation() {
     //final ref = fb.reference();
     //ref.child(testLocation).set(
     //    "_locationData"); //sijainti pitäs repästä tänne jotenki, globalkey?
-    getLocation();
+    //getLocation();
     print('sending location...');
     print(_locationData.latitude);
     print(_locationData.longitude);
+    User userObject =
+        User(_locationData.latitude, _locationData.longitude, "ebin", false);
 
-    userObject.latitude = _locationData.latitude;
-    userObject.longitude = _locationData.longitude;
-    userObject.id = "ebin";
-    userObject.needsHelp = false;
+    //userObject.latitude = _locationData.latitude;
+    //userObject.longitude = _locationData.longitude;
+    //userObject.id = "ebin";
+    //userObject.needsHelp = false;
+
+    //String megabanger = {"id": userObject.id, "help": userObject.needsHelp, };
+    //String megajson = jsonEncode(userObject);
+
+    String json = jsonEncode(userObject);
 
     DatabaseReference _someFirstRef =
         FirebaseDatabase.instance.reference().child(testLocation);
-    _someFirstRef.set(userObject); //userObject
+    _someFirstRef.set(json); //userObject
   }
 
   void retrieveLocation() {
