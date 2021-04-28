@@ -20,6 +20,8 @@ class Map extends StatefulWidget {
   _MapState createState() => _MapState();
 }
 
+GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
+
 class _MapState extends State<Map> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
   GoogleMapController _controller;
@@ -145,6 +147,7 @@ class _MapState extends State<Map> {
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
+    //return _locationData;
   }
 
   void _countDistance() {
@@ -601,7 +604,7 @@ class _MapState extends State<Map> {
         initialCameraPosition: CameraPosition(target: _initialcameraposition),
         onMapCreated: _onMapCreated,
         myLocationEnabled: true,
-        myLocationButtonEnabled: true,
+        myLocationButtonEnabled: false,
         markers: _markers,
         padding: EdgeInsets.only(
           top: 0,
@@ -664,7 +667,8 @@ class _MapState extends State<Map> {
                     actions: [
                       TextButton(
                           onPressed: () {
-                            addUsers();
+                            addUsers(); //ehkä muutaki? ainaki notification
+                            //widgetKey.currentState.sendHelpNotification();
                           },
                           child: Text("YES")),
                       TextButton(
