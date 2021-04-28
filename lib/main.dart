@@ -12,22 +12,25 @@ import 'package:flutter_app/screens/map_screen.dart';
 import 'package:cron/cron.dart';
 import 'components/firebase.dart';
 import 'components/map.dart';
+import 'firebase2.dart';
 
 //void main() => runApp(MyApp()); //korvasin tän tolla alemmalla t. Otto
 final logger = Logger();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cron = Cron();
+  final backend = FirebaseClass2();
   cron.schedule(Schedule.parse('*/1 * * * *'), () async {
     print('every minute, minute passes');
 
     // DatabaseReference _someFirstRef =
-    //     FirebaseDatabase.instance.reference().child("testLocation");
-    // _someFirstRef.set("blabla test");
+    //    FirebaseDatabase.instance.reference().child("testLocation2");
+    //_someFirstRef.set("perkele");
 
     //var juuh = new FirebaseClass();
     //var locationnnnn = new
-    widgetKey.currentState.sendLocation();
+    //widgetKey.currentState.sendLocation();
+    backend.sendLocation();
   });
 
   runApp(MyApp());
