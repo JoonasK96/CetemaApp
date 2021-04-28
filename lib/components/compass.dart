@@ -30,8 +30,8 @@ Widget buildCompass() {
       return Stack(
         children: [
           Container(
-            width: 200,
-            height: 200,
+            width: 320,
+            height: 320,
 
             alignment: Alignment.center,
             child: Transform.rotate(
