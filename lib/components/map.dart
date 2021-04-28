@@ -142,24 +142,6 @@ class _MapState extends State<Map> {
     });
   }
 
-  void addUsers() async {
-    var user1 = new User();
-    user1.longitude = 56.5;
-    user1.latitude = 4.5;
-    var user2 = new User();
-    user2.longitude = 60.5;
-    user2.latitude = 10.5;
-    var user3 = new User();
-    user3.longitude = 100.5;
-    user3.latitude = 20.5;
-
-    _user.add(user1);
-    _user.add(user2);
-    _user.add(user3);
-
-    getLocation();
-  }
-
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
@@ -683,7 +665,7 @@ class _MapState extends State<Map> {
                     actions: [
                       TextButton(
                           onPressed: () {
-                            addUsers(); //ehkä muutaki? ainaki notification
+                            //addUsers(); //ehkä muutaki? ainaki notification
                             //widgetKey.currentState.sendHelpNotification();
                           },
                           child: Text("YES")),
