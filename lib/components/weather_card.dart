@@ -19,7 +19,7 @@ class _WeatherState extends State<GetWeather> {
   int weather;
   Temperature temp;
   String icon;
-
+  bool loading = true;
 
   @override
   void initState() {
@@ -57,23 +57,30 @@ class _WeatherState extends State<GetWeather> {
     debugPrint('num: $num');
     debugPrint('FYI: $weather');
     switch(num){
-      case 2: {return AssetImage("assets/thunder.jp");}
+      case 2: {loadingDone();return AssetImage("assets/thunder.jp");}
       break;
-      case 3: {return AssetImage("assets/drizzle.jpg");}
+      case 3: {loadingDone();return AssetImage("assets/drizzle.jpg");}
       break;
-      case 5: {return AssetImage("assets/rain.jpg");}
+      case 5: {loadingDone();return AssetImage("assets/rain.jpg");}
       break;
-      case 6: {return AssetImage("assets/snow.jpg");}
+      case 6: {loadingDone();return AssetImage("assets/snow.jpg");}
       break;
-      case 7: {return AssetImage("assets/mist.jpg");}
+      case 7: {loadingDone();return AssetImage("assets/mist.jpg");}
       break;
-      case 800: {return AssetImage("assets/sunny2.jpg");}
+      case 800: {loadingDone();return AssetImage("assets/sunny2.jpg");}
       break;
-      case 8: {return AssetImage("assets/clouds.jpg");}
+      case 8: {loadingDone(); return AssetImage("assets/clouds.jpg");}
       break;
 
     }
+
     return AssetImage("assets/sunny2.jpg");
+
+  }
+  void loadingDone(){
+  setState(() {
+    loading = false;
+  });
   }
 
 
@@ -81,7 +88,7 @@ class _WeatherState extends State<GetWeather> {
 
   @override
   Widget build(BuildContext context) {
-    return  Card(
+    return loading? CircularProgressIndicator() : Card(
       color: Colors.grey[850],
       shape: RoundedRectangleBorder(
         //borderRadius: BorderRadius.circular(10),
