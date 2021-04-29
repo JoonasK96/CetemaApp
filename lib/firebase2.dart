@@ -53,15 +53,15 @@ class FirebaseClass2 {
     //final ref = fb.reference();
 
     _locationRef.child("testing1").once().then((DataSnapshot data) {
-      print('help! $data.value');
+      //print('help! $data.value');
       print(data.value);
       print(data.key);
       //setState(() {
 
       Map<String, dynamic> userMap = jsonDecode(data.value);
-      var retrievedData = User.fromJson(userMap);
-      //new Map<String, dynamic>.from(data.value);
-      print(retrievedData);
+      var retrievedData = User.fromJson(
+          userMap); //tää retrievedData on nyt se DB:stä haettu yhen käyttäjän datamöykky
+
       //});
     });
   }
