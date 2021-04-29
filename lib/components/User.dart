@@ -1,8 +1,8 @@
 class User {
-  double latitude;
-  double longitude;
-  bool needsHelp;
-  String id;
+  final double latitude;
+  final double longitude;
+  final bool needsHelp;
+  final String id;
 
   User(this.latitude, this.longitude, this.id, this.needsHelp);
   User.fromJson(Map<String, dynamic> json)
