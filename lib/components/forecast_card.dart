@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/weatherValues.dart';
@@ -104,7 +103,9 @@ class _ForecastState extends State<GetForecast> {
             fontSize: 10,
           ),
           getTitles: (value) {
+
             switch (value.toInt()) {
+
               case 1:
                 return 'MA';
               case 2:
