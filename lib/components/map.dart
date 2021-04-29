@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter_app/api/MML_Api.dart';
 import 'package:flutter_app/api/api.dart';
+import 'package:flutter_app/firebase2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,18 @@ import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 
-class Map extends StatefulWidget {
+class MapClass extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
 
+<<<<<<< HEAD
 GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
 
 class _MapState extends State<Map> {
+=======
+class _MapState extends State<MapClass> {
+>>>>>>> b838a2f59501d359e9fa386a151208cb886700c2
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
   GoogleMapController _controller;
   Location _location = Location();
@@ -46,6 +51,7 @@ class _MapState extends State<Map> {
   bool color6 = false;
   Set<Marker> _markers = {};
   BitmapDescriptor mapMarker;
+  final backend = FirebaseClass2();
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
@@ -662,7 +668,12 @@ class _MapState extends State<Map> {
                     actions: [
                       TextButton(
                           onPressed: () {
+<<<<<<< HEAD
                             //widgetKey.currentState.sendHelpNotification();
+=======
+                            //addUsers();
+                            backend.sendHelpNotification();
+>>>>>>> b838a2f59501d359e9fa386a151208cb886700c2
                           },
                           child: Text("YES")),
                       TextButton(
