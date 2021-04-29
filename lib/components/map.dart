@@ -67,15 +67,8 @@ class _MapState extends State<Map> {
         "${_locationData.latitude}",
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
-<<<<<<< HEAD
-    for (var index in features) {
-      i++;
-
-      setState(() {
-=======
     setState(() {
       for (var index in features) {
->>>>>>> 61cefbfe516a0180354d2f563b0fd37ffa081ad8
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
             position: LatLng(features[i]['geometry']['coordinates'][1],
@@ -85,14 +78,9 @@ class _MapState extends State<Map> {
               title: features[i]['properties']['label'],
               snippet: features[i]['properties']['label:placeTypeDescription'],
             )));
-<<<<<<< HEAD
-      });
-    }
-=======
         i++;
       }
     });
->>>>>>> 61cefbfe516a0180354d2f563b0fd37ffa081ad8
 
     // await  fetchPosts("fi", "geographic-names", "1000", "24.9432", "60.1668", "4237121f-2d10-4722-bb95-3193dd546af5").then((it) => logger.i(it));
   }
@@ -174,7 +162,7 @@ class _MapState extends State<Map> {
     print(_nearest.first);
   }
 
-  void bottomMenu(context) {
+  /* void bottomMenu(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -602,7 +590,7 @@ class _MapState extends State<Map> {
                 ));
           });
         });
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -618,7 +606,7 @@ class _MapState extends State<Map> {
         ),
         mapType: _currentMapType,
       ),
-      Positioned(top: 500, left: 60, child: WeatherBox()),
+      Positioned(top: 30, right: 10, child: WeatherBox()),
       Positioned(
         bottom: 10,
         left: 4,
@@ -627,7 +615,7 @@ class _MapState extends State<Map> {
             RawMaterialButton(
               elevation: 2.0,
               shape: CircleBorder(),
-              fillColor: Colors.blue,
+              fillColor: Colors.green[500],
               onPressed: _compassOnPress,
               child: FaIcon(FontAwesomeIcons.compass),
               constraints: BoxConstraints.tightFor(
@@ -638,7 +626,7 @@ class _MapState extends State<Map> {
             FloatingActionButton(
               onPressed: _onMapTypeButtonPressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.green[500],
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
@@ -649,7 +637,7 @@ class _MapState extends State<Map> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.green[500],
               child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
@@ -685,19 +673,22 @@ class _MapState extends State<Map> {
                 });
           },
           materialTapTargetSize: MaterialTapTargetSize.padded,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red[600],
           child: const Icon(Icons.add, size: 36.0),
         ),
       ),
       Positioned(
-        bottom: 0,
-        left: 100,
-        child: IconButton(
-            icon: FaIcon(FontAwesomeIcons.ellipsisV),
+        bottom: 10,
+        left: 65,
+        child: FloatingActionButton(
             onPressed: () {
-              bottomMenu(context);
               api();
-            }),
+            },
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            backgroundColor: Colors.green[500],
+            child: const FaIcon(
+              FontAwesomeIcons.mapMarker,
+            )),
       ),
     ]);
   }
