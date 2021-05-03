@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/components/User.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 
 import 'components/User.dart';
