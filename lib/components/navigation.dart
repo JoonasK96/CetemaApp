@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/settings_screen.dart';
 
 import 'package:flutter_app/screens/weather_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,6 +20,7 @@ class _NavigationState extends State<Navigation> {
   static List<Widget> _widgetOptions = <Widget>[
     MapScreen(),
     WeatherScreen(),
+    SettingsScreen(),
   ];
   Future<bool> _onWillPop() async {
     return (await showDialog(

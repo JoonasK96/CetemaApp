@@ -127,7 +127,7 @@ class _WeatherState extends State<GetWeather> {
                 ),
             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Container(
                 height: 200,
                 width: double.infinity,
