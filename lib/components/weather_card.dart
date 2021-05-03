@@ -35,7 +35,6 @@ class _WeatherState extends State<GetWeather> {
     lon = position.longitude;
     debugPrint('FYI: $lat');
     getWeather();
-
   }
 
   void getWeather() async {
@@ -48,13 +47,14 @@ class _WeatherState extends State<GetWeather> {
     weatherImg();
     debugPrint('sää: $weather');
   }
- void reload() async{ final cron = Cron();
-  cron.schedule(Schedule.parse('*/1 * * * *'), () async {
-  print('every minute, minute passes');
 
+  void reload() async {
+    final cron = Cron();
+    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+      print('every minute, minute passes');
+    });
+  }
 
-});}
-  
   AssetImage weatherImg() {
     int num = weather;
     if(weather != 800) {

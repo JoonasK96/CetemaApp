@@ -20,6 +20,7 @@ class FirebaseClass2 {
   final testLocation = "testing1";
 
   var retrievedLocation;
+  DatabaseReference _locationRef = FirebaseDatabase.instance.reference();
 
   void sendLocation() {
     //final ref = fb.reference();
@@ -42,18 +43,25 @@ class FirebaseClass2 {
 
     String json = jsonEncode(userObject);
 
-    DatabaseReference _someFirstRef =
-        FirebaseDatabase.instance.reference().child(testLocation);
-    _someFirstRef.set(json); //userObject
+    //DatabaseReference _someFirstRef =
+    //FirebaseDatabase.instance.reference().child(testLocation);
+    _locationRef.child(testLocation).set(json);
+    //_locationRef.set(json); //userObject
   }
 
   void retrieveLocation() {
-    final ref = fb.reference();
-    ref.child("testing1").once().then((DataSnapshot data) {
-      print('help! $data.value');
+    //final ref = fb.reference();
+
+    _locationRef.child("testing1").once().then((DataSnapshot data) {
+      //print('help! $data.value');
+      print(data.value);
       print(data.key);
       //setState(() {
-      retrievedLocation = data.value;
+
+      Map<String, dynamic> userMap = jsonDecode(data.value);
+      var retrievedData = User.fromJson(
+          userMap); //tää retrievedData on nyt se DB:stä haettu yhen käyttäjän datamöykky
+
       //});
     });
   }
@@ -65,6 +73,7 @@ class FirebaseClass2 {
   }
 
   sendHelpNotification() {
-    retrievedLocation();
+    retrieveLocation();
+    print("help has been requested by some user");
   }
 }

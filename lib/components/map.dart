@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_app/api/api.dart';
+import 'package:flutter_app/firebase2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,18 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 
-class Map extends StatefulWidget {
+class MapClass extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
 
+<<<<<<< HEAD
+GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
+
 class _MapState extends State<Map> {
+=======
+class _MapState extends State<MapClass> {
+>>>>>>> b838a2f59501d359e9fa386a151208cb886700c2
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
   GoogleMapController _controller;
   Location _location = Location();
@@ -42,6 +49,8 @@ class _MapState extends State<Map> {
   BitmapDescriptor helpMapMarker;
   bool markers = false;
   List<String> markerIdList;
+  final backend = FirebaseClass2();
+
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     locationSubscription = _location.onLocationChanged.listen((l) {
@@ -81,9 +90,7 @@ class _MapState extends State<Map> {
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
     setState(() {
-
       for (var index in features) {
-        //markerIdList.add(features[i]['properties']['label']);
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
             position: LatLng(features[i]['geometry']['coordinates'][1],
@@ -92,7 +99,6 @@ class _MapState extends State<Map> {
             infoWindow: InfoWindow(
               title: features[i]['properties']['label'],
               snippet: features[i]['properties']['label:placeTypeDescription'],
-
             )));
         i++;
       }
@@ -160,6 +166,7 @@ class _MapState extends State<Map> {
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
+    //return _locationData;
   }
 
   void _countDistance() {
@@ -179,7 +186,7 @@ class _MapState extends State<Map> {
     print(_nearest.first);
   }
 
-  void bottomMenu(context) {
+  /* void bottomMenu(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -607,7 +614,7 @@ class _MapState extends State<Map> {
                 ));
           });
         });
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -623,7 +630,7 @@ class _MapState extends State<Map> {
         ),
         mapType: _currentMapType,
       ),
-      Positioned(top: 500, left: 60, child: WeatherBox()),
+      Positioned(top: 30, right: 10, child: WeatherBox()),
       Positioned(
         bottom: 10,
         left: 4,
@@ -632,7 +639,7 @@ class _MapState extends State<Map> {
             RawMaterialButton(
               elevation: 2.0,
               shape: CircleBorder(),
-              fillColor: Colors.blue,
+              fillColor: Colors.green[500],
               onPressed: _compassOnPress,
               child: FaIcon(FontAwesomeIcons.compass),
               constraints: BoxConstraints.tightFor(
@@ -643,7 +650,7 @@ class _MapState extends State<Map> {
             FloatingActionButton(
               onPressed: _onMapTypeButtonPressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.green[500],
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
@@ -654,7 +661,7 @@ class _MapState extends State<Map> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.green[500],
               child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
@@ -679,7 +686,12 @@ class _MapState extends State<Map> {
                     actions: [
                       TextButton(
                           onPressed: () {
-
+<<<<<<< HEAD
+                            //widgetKey.currentState.sendHelpNotification();
+=======
+                            //addUsers();
+                            backend.sendHelpNotification();
+>>>>>>> b838a2f59501d359e9fa386a151208cb886700c2
                           },
                           child: Text("YES")),
                       TextButton(
@@ -690,16 +702,22 @@ class _MapState extends State<Map> {
                 });
           },
           materialTapTargetSize: MaterialTapTargetSize.padded,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red[600],
           child: const Icon(Icons.add, size: 36.0),
         ),
       ),
       Positioned(
-        bottom: 0,
-        left: 100,
-        child: IconButton(
-            icon: FaIcon(FontAwesomeIcons.ellipsisV),
+        bottom: 10,
+        left: 65,
+        child: FloatingActionButton(
             onPressed: () {
+              api();
+            },
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            backgroundColor: Colors.green[500],
+            child: const FaIcon(
+              FontAwesomeIcons.mapMarker,
+            )),
               setState(() {
                   if(markers){
                     _markers.clear();

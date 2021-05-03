@@ -8,8 +8,8 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar(),
-        drawer: drawer(),
+        //appBar: appBar(),
+        //drawer: drawer(),
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.black,
         body:
@@ -45,7 +45,7 @@ class MapScreen extends StatelessWidget {
             Container(
                 width: double.maxFinite,
                 height: double.maxFinite,
-                child: Map()),
+                child: MapClass()),
           ],
         ));
   }
