@@ -21,6 +21,11 @@ class MapClass extends StatefulWidget {
   _MapState createState() => _MapState();
 }
 
+<<<<<<< HEAD
+=======
+GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
+
+>>>>>>> a54033825b68402a65ed208df85d77d297ca1ad5
 class _MapState extends State<MapClass> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
   GoogleMapController _controller;
@@ -58,17 +63,14 @@ class _MapState extends State<MapClass> {
     });
   }
 
-  void callForHelp(double needsHelpLat, double needsHelpLon){
+  void callForHelp(double needsHelpLat, double needsHelpLon) {
     cameraLock(false);
     _markers.add(Marker(
         markerId: MarkerId("$needsHelpLat"),
-        position: LatLng(needsHelpLat,
-            needsHelpLon),
+        position: LatLng(needsHelpLat, needsHelpLon),
         icon: helpMapMarker,
         infoWindow: InfoWindow(
           title: "This user needs help!",
-
-
         )));
 
     _controller.animateCamera(
@@ -683,6 +685,11 @@ class _MapState extends State<MapClass> {
                     actions: [
                       TextButton(
                           onPressed: () {
+<<<<<<< HEAD
+=======
+                            //widgetKey.currentState.sendHelpNotification();
+
+>>>>>>> a54033825b68402a65ed208df85d77d297ca1ad5
                             //addUsers();
                             backend.sendHelpNotification();
                           },
@@ -704,26 +711,23 @@ class _MapState extends State<MapClass> {
         left: 65,
         child: FloatingActionButton(
             onPressed: () {
-              api();
+              callForHelp(60.1733244, 24.9410248);
+              setState(() {
+                if (markers) {
+                  _markers.clear();
+                  markers = !markers;
+                } else {
+                  api();
+                  markers = true;
+                }
+              });
             },
             materialTapTargetSize: MaterialTapTargetSize.padded,
             backgroundColor: Colors.green[500],
             child: const FaIcon(
               FontAwesomeIcons.mapMarker,
             )),
-              setState(() {
-                  if(markers){
-                    _markers.clear();
-                    markers = !markers;
-                  }else{
-                    api();
-                    markers = true;
-                  }
-              });
-
-             // bottomMenu(context);
-                callForHelp(60.1733244, 24.9410248);
-            }),
+        // bottomMenu(context);
       ),
     ]);
   }
