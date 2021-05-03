@@ -88,6 +88,7 @@ flutter:
     - assets/mist.jpg
     - assets/sunny2.jpg
     - assets/marker.png
+    - assets/helpmarker.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter_app/api/MML_Api.dart';
 import 'package:flutter_app/api/api.dart';
 import 'package:flutter_app/firebase2.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,9 +8,12 @@ import 'package:flutter_app/components/compass.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+<<<<<<< HEAD
 import 'package:flutter_app/components/User.dart';
+=======
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+>>>>>>> aff715ad0cd320e00c1df8367a2b67cb02173311
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 
 class MapClass extends StatefulWidget {
@@ -43,6 +43,9 @@ class _MapState extends State<MapClass> {
   bool color6 = false;
   Set<Marker> _markers = {};
   BitmapDescriptor mapMarker;
+  BitmapDescriptor helpMapMarker;
+  bool markers = false;
+  List<String> markerIdList;
   final backend = FirebaseClass2();
 
   void _onMapCreated(GoogleMapController _cntlr) {
@@ -53,6 +56,24 @@ class _MapState extends State<MapClass> {
             CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15)),
       );
     });
+  }
+
+  void callForHelp(double needsHelpLat, double needsHelpLon){
+    cameraLock(false);
+    _markers.add(Marker(
+        markerId: MarkerId("$needsHelpLat"),
+        position: LatLng(needsHelpLat,
+            needsHelpLon),
+        icon: helpMapMarker,
+        infoWindow: InfoWindow(
+          title: "This user needs help!",
+
+
+        )));
+
+    _controller.animateCamera(
+      CameraUpdate.newLatLng(LatLng(needsHelpLat, needsHelpLon)),
+    );
   }
 
   void api() async {
@@ -86,6 +107,8 @@ class _MapState extends State<MapClass> {
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
+    helpMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/helpmarker.png');
   }
 
 /*  void addMarkers() {
@@ -688,6 +711,19 @@ class _MapState extends State<MapClass> {
             child: const FaIcon(
               FontAwesomeIcons.mapMarker,
             )),
+              setState(() {
+                  if(markers){
+                    _markers.clear();
+                    markers = !markers;
+                  }else{
+                    api();
+                    markers = true;
+                  }
+              });
+
+             // bottomMenu(context);
+                callForHelp(60.1733244, 24.9410248);
+            }),
       ),
     ]);
   }
