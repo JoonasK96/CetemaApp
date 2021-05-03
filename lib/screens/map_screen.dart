@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/components/compass.dart';
-import 'package:flutter_app/components/app_bar.dart';
-import 'package:flutter_app/components/drawer.dart';
 import 'package:flutter_app/components/map.dart';
 
 class MapScreen extends StatelessWidget {

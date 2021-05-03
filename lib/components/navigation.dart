@@ -17,6 +17,7 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[MapScreen(), WeatherScreen()];
+
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,

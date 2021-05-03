@@ -1,20 +1,17 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_app/components/map.dart';
-import 'package:location/location.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter_app/components/User.dart';
-import 'dart:async';
+import 'package:location/location.dart';
+
 import 'components/User.dart';
 
 class FirebaseClass2 {
   //GlobalKey<FirebaseClass2> widgetKey = GlobalKey<FirebaseClass2>();
   Location _location = Location();
   LocationData _locationData;
+  // ignore: cancel_subscriptions
   StreamSubscription<LocationData> locationSubscription;
   final fb = FirebaseDatabase.instance;
   final testLocation = "testing1";

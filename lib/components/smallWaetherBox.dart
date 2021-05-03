@@ -1,10 +1,7 @@
-
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-
 
 class WeatherBox extends StatefulWidget {
   @override
@@ -22,12 +19,10 @@ class _WeatherBoxState extends State<WeatherBox> {
   String icon;
   bool isLoaded = true;
 
-
-
   @override
   void initState() {
     super.initState();
-   ws = new WeatherFactory(key);
+    ws = new WeatherFactory(key);
     getLocation();
   }
 
@@ -38,7 +33,6 @@ class _WeatherBoxState extends State<WeatherBox> {
     lon = position.longitude;
     debugPrint('FYI: $lat');
     getWeather();
-
   }
 
   void getWeather() async {
@@ -51,34 +45,37 @@ class _WeatherBoxState extends State<WeatherBox> {
     print(icon);
 
     debugPrint('sää: $weather');
-setState(() {
-    isLoaded = false;
-});
+    setState(() {
+      isLoaded = false;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return  isLoaded? CircularProgressIndicator() : Container(
-      width: 60,
-      height: 60,
-
-      decoration: BoxDecoration(
-
-        color: Colors.grey.shade300,
-        shape: BoxShape.circle
-
-      ),
-
-      child:  Center( child:
-        Column(
-        children: [
-      Wrap(
-        children: [
-          Image.network("https://openweathermap.org/img/w/" + icon +".png", height: 35, fit: BoxFit.fitWidth,),
-          Text("${temp.toString().split(" ")[0]} °C", style: TextStyle(fontSize: 15),),
-        ],
-      ),],))
-    );
-
-
-}}
+    return isLoaded
+        ? CircularProgressIndicator()
+        : Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                color: Colors.grey.shade300, shape: BoxShape.circle),
+            child: Center(
+                child: Column(
+              children: [
+                Wrap(
+                  children: [
+                    Image.network(
+                      "https://openweathermap.org/img/w/" + icon + ".png",
+                      height: 35,
+                      fit: BoxFit.fitWidth,
+                    ),
+                    Text(
+                      "${temp.toString().split(" ")[0]} °C",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ],
+            )));
+  }
+}

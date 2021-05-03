@@ -83,6 +83,7 @@ class _MapState extends State<MapClass> {
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
     setState(() {
+      // ignore: unused_local_variable
       for (var index in features) {
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
