@@ -99,7 +99,7 @@ class _WeatherState extends State<GetWeather> {
       shape: RoundedRectangleBorder(
         //borderRadius: BorderRadius.circular(10),
       ),
-      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Padding(
 
         padding: const EdgeInsets.fromLTRB(0, 60, 0, 0 ),

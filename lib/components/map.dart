@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter_app/api/MML_Api.dart';
 import 'package:flutter_app/api/api.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,10 +7,8 @@ import 'package:flutter_app/components/compass.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_app/components/User.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 
 class Map extends StatefulWidget {
@@ -44,7 +39,9 @@ class _MapState extends State<Map> {
   bool color6 = false;
   Set<Marker> _markers = {};
   BitmapDescriptor mapMarker;
-
+  BitmapDescriptor helpMapMarker;
+  bool markers = false;
+  List<String> markerIdList;
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     locationSubscription = _location.onLocationChanged.listen((l) {
@@ -53,6 +50,24 @@ class _MapState extends State<Map> {
             CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15)),
       );
     });
+  }
+
+  void callForHelp(double needsHelpLat, double needsHelpLon){
+    cameraLock(false);
+    _markers.add(Marker(
+        markerId: MarkerId("$needsHelpLat"),
+        position: LatLng(needsHelpLat,
+            needsHelpLon),
+        icon: helpMapMarker,
+        infoWindow: InfoWindow(
+          title: "This user needs help!",
+
+
+        )));
+
+    _controller.animateCamera(
+      CameraUpdate.newLatLng(LatLng(needsHelpLat, needsHelpLon)),
+    );
   }
 
   void api() async {
@@ -66,7 +81,9 @@ class _MapState extends State<Map> {
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
     setState(() {
+
       for (var index in features) {
+        //markerIdList.add(features[i]['properties']['label']);
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
             position: LatLng(features[i]['geometry']['coordinates'][1],
@@ -75,6 +92,7 @@ class _MapState extends State<Map> {
             infoWindow: InfoWindow(
               title: features[i]['properties']['label'],
               snippet: features[i]['properties']['label:placeTypeDescription'],
+
             )));
         i++;
       }
@@ -86,6 +104,8 @@ class _MapState extends State<Map> {
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
+    helpMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/helpmarker.png');
   }
 
 /*  void addMarkers() {
@@ -659,7 +679,7 @@ class _MapState extends State<Map> {
                     actions: [
                       TextButton(
                           onPressed: () {
-                            addUsers();
+
                           },
                           child: Text("YES")),
                       TextButton(
@@ -680,8 +700,18 @@ class _MapState extends State<Map> {
         child: IconButton(
             icon: FaIcon(FontAwesomeIcons.ellipsisV),
             onPressed: () {
-              bottomMenu(context);
-              api();
+              setState(() {
+                  if(markers){
+                    _markers.clear();
+                    markers = !markers;
+                  }else{
+                    api();
+                    markers = true;
+                  }
+              });
+
+             // bottomMenu(context);
+                callForHelp(60.1733244, 24.9410248);
             }),
       ),
     ]);
