@@ -1,21 +1,17 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/map_screen.dart';
-import 'package:logger/logger.dart';
-import 'api/MML_Api.dart';
-import 'components/navigation.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'dart:async';
-import 'dart:math';
-import 'package:flutter_app/screens/map_screen.dart';
+
 import 'package:cron/cron.dart';
-import 'components/firebase.dart';
-import 'components/map.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+
+import 'components/navigation.dart';
 import 'firebase2.dart';
 
 //void main() => runApp(MyApp()); //korvasin tän tolla alemmalla t. Otto
 final logger = Logger();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cron = Cron();
@@ -43,25 +39,25 @@ class MyApp extends StatefulWidget {
   @override
   _AppState createState() => _AppState();
 
-  //@override
-  //Widget build(BuildContext context) {
-  //  return MaterialApp(
-  //      debugShowCheckedModeBanner: false,
-  //      home: FutureBuilder(
-  //          future: _fbApp,
-  //          builder: (context, snapshot) {
-  //            if (snapshot.hasError) {
-  //              print('error ${snapshot.error.toString()}');
-  //              return Text('something went wrong');
-  //            } else if (snapshot.hasData) {
-  //              return Navigation();
-  //            } else {
-  //              return Center(
-  //                child: CircularProgressIndicator(),
-  //              );
-  //            }
-  //          }));
-  //}
+//@override
+//Widget build(BuildContext context) {
+//  return MaterialApp(
+//      debugShowCheckedModeBanner: false,
+//      home: FutureBuilder(
+//          future: _fbApp,
+//          builder: (context, snapshot) {
+//            if (snapshot.hasError) {
+//              print('error ${snapshot.error.toString()}');
+//              return Text('something went wrong');
+//            } else if (snapshot.hasData) {
+//              return Navigation();
+//            } else {
+//              return Center(
+//                child: CircularProgressIndicator(),
+//              );
+//            }
+//          }));
+//}
 
 }
 
@@ -70,6 +66,7 @@ class _AppState extends State<MyApp> {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   final fb = FirebaseDatabase.instance;
   final testLocation = "testing1";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
