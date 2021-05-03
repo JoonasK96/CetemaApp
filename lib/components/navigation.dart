@@ -53,7 +53,7 @@ class _NavigationState extends State<Navigation> {
     return WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
-          backgroundColor: const Color(0xFFC8E6C9),
+          backgroundColor: Colors.blue[50],
           body: IndexedStack(
             index: _selectedIndex,
             children: _widgetOptions,
@@ -76,13 +76,13 @@ class _NavigationState extends State<Navigation> {
             type: BottomNavigationBarType.fixed,
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
-            selectedItemColor: Colors.green,
+            selectedItemColor: Colors.blue[500],
             unselectedFontSize: 0.0,
             selectedFontSize: 0.0,
             elevation: 0.0,
             iconSize: 30,
-            unselectedItemColor: Colors.white,
-            backgroundColor: Colors.green[900],
+            unselectedItemColor: Colors.blue[200],
+            backgroundColor: Colors.white,
           ),
         ));
   }

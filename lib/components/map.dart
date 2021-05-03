@@ -8,7 +8,6 @@ import 'package:flutter_app/components/compass.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 
@@ -31,7 +30,6 @@ class _MapState extends State<MapClass> {
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
-  PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
   bool lockCameraOnUser = true;
   bool color = false;
@@ -632,7 +630,7 @@ class _MapState extends State<MapClass> {
             RawMaterialButton(
               elevation: 2.0,
               shape: CircleBorder(),
-              fillColor: Colors.green[500],
+              fillColor: Colors.blue[300],
               onPressed: _compassOnPress,
               child: FaIcon(FontAwesomeIcons.compass),
               constraints: BoxConstraints.tightFor(
@@ -643,7 +641,7 @@ class _MapState extends State<MapClass> {
             FloatingActionButton(
               onPressed: _onMapTypeButtonPressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green[500],
+              backgroundColor: Colors.blue[300],
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
@@ -654,7 +652,7 @@ class _MapState extends State<MapClass> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green[500],
+              backgroundColor: Colors.blue[300],
               child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
@@ -714,7 +712,7 @@ class _MapState extends State<MapClass> {
               });
             },
             materialTapTargetSize: MaterialTapTargetSize.padded,
-            backgroundColor: Colors.green[500],
+            backgroundColor: Colors.blue[300],
             child: const FaIcon(
               FontAwesomeIcons.mapMarker,
             )),

@@ -56,7 +56,7 @@ class _ForecastState extends State<GetForecast> {
             AspectRatio(
               aspectRatio: 1.7,
               child: Container(
-                decoration: const BoxDecoration(color: const Color(0xFFC8E6C9)),
+                decoration: const BoxDecoration(color: const Color(0xC2E0FF)),
                 child: Padding(
                   padding: const EdgeInsets.only(
                       right: 18.0, left: 12.0, top: 24, bottom: 12),
