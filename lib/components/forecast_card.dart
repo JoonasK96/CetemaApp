@@ -172,7 +172,7 @@ class _ForecastState extends State<GetForecast> {
       lineBarsData: [
         LineChartBarData(
           spots: [
-            FlSpot(0, 50),
+            FlSpot(0, 34),
             FlSpot(1, 10),
             FlSpot(2, 20),
             FlSpot(3, 20),

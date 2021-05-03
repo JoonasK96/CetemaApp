@@ -116,7 +116,7 @@ class _WeatherState extends State<GetWeather> {
 
             image: weatherImg(),
             colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.75),
+                Colors.black.withOpacity(0.70),
                  BlendMode.dstATop
             ),
             fit: BoxFit.cover,
@@ -143,6 +143,7 @@ class _WeatherState extends State<GetWeather> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
+
                     ),
                   ),
                   SizedBox(
