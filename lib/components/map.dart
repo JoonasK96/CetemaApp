@@ -12,7 +12,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_app/components/User.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
@@ -22,13 +21,7 @@ class MapClass extends StatefulWidget {
   _MapState createState() => _MapState();
 }
 
-<<<<<<< HEAD
-GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
-
-class _MapState extends State<Map> {
-=======
 class _MapState extends State<MapClass> {
->>>>>>> b838a2f59501d359e9fa386a151208cb886700c2
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
   GoogleMapController _controller;
   Location _location = Location();
@@ -40,7 +33,6 @@ class _MapState extends State<MapClass> {
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
-  PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
   bool lockCameraOnUser = true;
   bool color = false;
@@ -668,12 +660,8 @@ class _MapState extends State<MapClass> {
                     actions: [
                       TextButton(
                           onPressed: () {
-<<<<<<< HEAD
-                            //widgetKey.currentState.sendHelpNotification();
-=======
                             //addUsers();
                             backend.sendHelpNotification();
->>>>>>> b838a2f59501d359e9fa386a151208cb886700c2
                           },
                           child: Text("YES")),
                       TextButton(

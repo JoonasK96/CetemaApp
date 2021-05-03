@@ -56,7 +56,7 @@ class _ForecastState extends State<GetForecast> {
             AspectRatio(
               aspectRatio: 1.7,
               child: Container(
-                decoration: const BoxDecoration(color: Colors.green),
+                decoration: const BoxDecoration(color: const Color(0xFFC8E6C9)),
                 child: Padding(
                   padding: const EdgeInsets.only(
                       right: 18.0, left: 12.0, top: 24, bottom: 12),
@@ -194,7 +194,7 @@ class _ForecastState extends State<GetForecast> {
           belowBarData: BarAreaData(show: true, colors: [
             ColorTween(begin: Colors.blue, end: Colors.blue)
                 .lerp(0.2)
-                .withOpacity(0.5),
+                .withOpacity(0.4),
           ]),
         ),
       ],

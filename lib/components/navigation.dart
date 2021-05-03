@@ -16,7 +16,10 @@ class Navigation extends StatefulWidget {
 
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[MapScreen(), WeatherScreen()];
+  static List<Widget> _widgetOptions = <Widget>[
+    MapScreen(),
+    WeatherScreen(),
+  ];
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
@@ -50,7 +53,7 @@ class _NavigationState extends State<Navigation> {
     return WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
-          backgroundColor: Colors.green[500],
+          backgroundColor: const Color(0xFFC8E6C9),
           body: IndexedStack(
             index: _selectedIndex,
             children: _widgetOptions,
@@ -73,7 +76,7 @@ class _NavigationState extends State<Navigation> {
             type: BottomNavigationBarType.fixed,
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
-            selectedItemColor: Colors.green[300],
+            selectedItemColor: Colors.green,
             unselectedFontSize: 0.0,
             selectedFontSize: 0.0,
             elevation: 0.0,
