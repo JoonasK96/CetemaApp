@@ -631,7 +631,7 @@ class _MapState extends State<MapClass> {
             RawMaterialButton(
               elevation: 2.0,
               shape: CircleBorder(),
-              fillColor: Colors.green[500],
+              fillColor: Colors.blue[300],
               onPressed: _compassOnPress,
               child: FaIcon(FontAwesomeIcons.compass),
               constraints: BoxConstraints.tightFor(
@@ -642,7 +642,7 @@ class _MapState extends State<MapClass> {
             FloatingActionButton(
               onPressed: _onMapTypeButtonPressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green[500],
+              backgroundColor: Colors.blue[300],
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
@@ -653,7 +653,7 @@ class _MapState extends State<MapClass> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green[500],
+              backgroundColor: Colors.blue[300],
               child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
@@ -713,7 +713,7 @@ class _MapState extends State<MapClass> {
               });
             },
             materialTapTargetSize: MaterialTapTargetSize.padded,
-            backgroundColor: Colors.green[500],
+            backgroundColor: Colors.blue[300],
             child: const FaIcon(
               FontAwesomeIcons.mapMarker,
             )),

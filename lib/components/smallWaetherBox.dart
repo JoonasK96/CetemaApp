@@ -57,8 +57,8 @@ class _WeatherBoxState extends State<WeatherBox> {
         : Container(
             width: 60,
             height: 60,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade300, shape: BoxShape.circle),
+            decoration:
+                BoxDecoration(color: Colors.blue[100], shape: BoxShape.circle),
             child: Center(
                 child: Column(
               children: [

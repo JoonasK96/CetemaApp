@@ -81,16 +81,12 @@ class _WeatherState extends State<GetWeather> {
     }
 
     return AssetImage("assets/sunny2.jpg");
-
   }
   void loadingDone(){
   setState(() {
     loading = false;
   });
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
