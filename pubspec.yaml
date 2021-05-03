@@ -26,6 +26,8 @@ dependencies:
     sdk: flutter
   firebase_core: ^0.7.0
   firebase_database: ^6.0.0 # ^6.1.0
+  file_picker: any
+  share: ^2.0.1
 
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
@@ -46,7 +48,6 @@ dependencies:
   image: ^3.0.2
   fl_chart: ^0.30.0
   cron: ^0.3.0
-  flutter_polyline_points: ^0.2.4
   retrofit: any
   dio: ^3.0.10
   built_value: ^7.1.0
@@ -86,6 +87,7 @@ flutter:
     - assets/mist.jpg
     - assets/sunny2.jpg
     - assets/marker.png
+    - assets/helpmarker.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

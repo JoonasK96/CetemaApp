@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+
 class GetForecast extends StatefulWidget {
   @override
   _ForecastState createState() => _ForecastState();
@@ -25,7 +26,6 @@ class _ForecastState extends State<GetForecast> {
     ws = new WeatherFactory(key, language: Language.FINNISH);
     getLocation();
   }
-
 
   void getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -56,9 +56,7 @@ class _ForecastState extends State<GetForecast> {
             AspectRatio(
               aspectRatio: 1.7,
               child: Container(
-                decoration: const BoxDecoration(
-
-                    color: Color(0xff232d37)),
+                decoration: const BoxDecoration(color: const Color(0xC2E0FF)),
                 child: Padding(
                   padding: const EdgeInsets.only(
                       right: 18.0, left: 12.0, top: 24, bottom: 12),
@@ -68,7 +66,10 @@ class _ForecastState extends State<GetForecast> {
             ),
           ],
         ),
-        Container(child: weatherValuesLoading? CircularProgressIndicator() : forecastDays()),
+        Container(
+            child: weatherValuesLoading
+                ? CircularProgressIndicator()
+                : forecastDays()),
       ],
     );
   }
@@ -81,13 +82,13 @@ class _ForecastState extends State<GetForecast> {
         drawHorizontalLine: true,
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: const Color(0xff37434d),
+            color: const Color(0xff000000),
             strokeWidth: 1,
           );
         },
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: const Color(0xff37434d),
+            color: const Color(0xff000000),
             strokeWidth: 1,
           );
         },
@@ -98,14 +99,12 @@ class _ForecastState extends State<GetForecast> {
           showTitles: true,
           reservedSize: 22,
           getTextStyles: (value) => const TextStyle(
-            color: Color(0xff68737d),
+            color: Color(0xff000000),
             fontWeight: FontWeight.bold,
             fontSize: 10,
           ),
           getTitles: (value) {
-
             switch (value.toInt()) {
-
               case 1:
                 return 'MA';
               case 2:
@@ -128,7 +127,7 @@ class _ForecastState extends State<GetForecast> {
         leftTitles: SideTitles(
           showTitles: true,
           getTextStyles: (value) => const TextStyle(
-            color: Color(0xff67727d),
+            color: Color(0xff000000),
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),
@@ -165,7 +164,7 @@ class _ForecastState extends State<GetForecast> {
       ),
       borderData: FlBorderData(
           show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
+          border: Border.all(color: const Color(0xff000000), width: 1)),
       minX: 0,
       maxX: 7,
       minY: 0,
@@ -195,7 +194,7 @@ class _ForecastState extends State<GetForecast> {
           belowBarData: BarAreaData(show: true, colors: [
             ColorTween(begin: Colors.blue, end: Colors.blue)
                 .lerp(0.2)
-                .withOpacity(0.2),
+                .withOpacity(0.4),
           ]),
         ),
       ],
@@ -203,7 +202,6 @@ class _ForecastState extends State<GetForecast> {
   }
 
   Container forecastDays() {
-
     return Container(
       height: 82,
       child: ListView.separated(
@@ -221,11 +219,12 @@ class _ForecastState extends State<GetForecast> {
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Center(
                 child: WeatherValues(
-                  DateFormat('E, ha').format(
-                      DateTime.parse(item.date.toString())),
-                  '${item.temperature.toString().split(" ")[0]}°C',
-                  iconData: "https://openweathermap.org/img/w/" + item.weatherIcon +".png",
-                )),
+              DateFormat('E, ha').format(DateTime.parse(item.date.toString())),
+              '${item.temperature.toString().split(" ")[0]}°C',
+              iconData: "https://openweathermap.org/img/w/" +
+                  item.weatherIcon +
+                  ".png",
+            )),
           );
         },
       ),

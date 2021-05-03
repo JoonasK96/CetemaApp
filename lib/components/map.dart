@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter_app/api/MML_Api.dart';
 import 'package:flutter_app/api/api.dart';
 import 'package:flutter_app/firebase2.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,16 +8,15 @@ import 'package:flutter_app/components/compass.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_app/components/User.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
 
 class MapClass extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
+
+GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
 
 class _MapState extends State<MapClass> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
@@ -34,7 +30,6 @@ class _MapState extends State<MapClass> {
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
-  PolylinePoints polylinePoints = PolylinePoints();
   String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
   bool lockCameraOnUser = true;
   bool color = false;
@@ -45,6 +40,9 @@ class _MapState extends State<MapClass> {
   bool color6 = false;
   Set<Marker> _markers = {};
   BitmapDescriptor mapMarker;
+  BitmapDescriptor helpMapMarker;
+  bool markers = false;
+  List<String> markerIdList;
   final backend = FirebaseClass2();
 
   void _onMapCreated(GoogleMapController _cntlr) {
@@ -55,6 +53,21 @@ class _MapState extends State<MapClass> {
             CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15)),
       );
     });
+  }
+
+  void callForHelp(double needsHelpLat, double needsHelpLon) {
+    cameraLock(false);
+    _markers.add(Marker(
+        markerId: MarkerId("$needsHelpLat"),
+        position: LatLng(needsHelpLat, needsHelpLon),
+        icon: helpMapMarker,
+        infoWindow: InfoWindow(
+          title: "This user needs help!",
+        )));
+
+    _controller.animateCamera(
+      CameraUpdate.newLatLng(LatLng(needsHelpLat, needsHelpLon)),
+    );
   }
 
   void api() async {
@@ -68,6 +81,7 @@ class _MapState extends State<MapClass> {
         "4237121f-2d10-4722-bb95-3193dd546af5"));
     var i = 0;
     setState(() {
+      // ignore: unused_local_variable
       for (var index in features) {
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
@@ -88,6 +102,8 @@ class _MapState extends State<MapClass> {
   void setCustomMarker() async {
     mapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
+    helpMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/helpmarker.png');
   }
 
 /*  void addMarkers() {
@@ -142,6 +158,7 @@ class _MapState extends State<MapClass> {
   void getLocation() async {
     _locationData = await _location.getLocation();
     _countDistance();
+    //return _locationData;
   }
 
   void _countDistance() {
@@ -161,7 +178,7 @@ class _MapState extends State<MapClass> {
     print(_nearest.first);
   }
 
-  void bottomMenu(context) {
+  /* void bottomMenu(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -589,7 +606,7 @@ class _MapState extends State<MapClass> {
                 ));
           });
         });
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {
@@ -605,7 +622,7 @@ class _MapState extends State<MapClass> {
         ),
         mapType: _currentMapType,
       ),
-      Positioned(top: 500, left: 60, child: WeatherBox()),
+      Positioned(top: 30, right: 10, child: WeatherBox()),
       Positioned(
         bottom: 10,
         left: 4,
@@ -614,7 +631,7 @@ class _MapState extends State<MapClass> {
             RawMaterialButton(
               elevation: 2.0,
               shape: CircleBorder(),
-              fillColor: Colors.blue,
+              fillColor: Colors.blue[300],
               onPressed: _compassOnPress,
               child: FaIcon(FontAwesomeIcons.compass),
               constraints: BoxConstraints.tightFor(
@@ -625,7 +642,7 @@ class _MapState extends State<MapClass> {
             FloatingActionButton(
               onPressed: _onMapTypeButtonPressed,
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.blue[300],
               child: const Icon(Icons.map, size: 36.0),
             ),
             FloatingActionButton(
@@ -636,7 +653,7 @@ class _MapState extends State<MapClass> {
                 });
               }),
               materialTapTargetSize: MaterialTapTargetSize.padded,
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.blue[300],
               child: const Icon(Icons.api_sharp, size: 36.0),
             ),
           ],
@@ -661,6 +678,8 @@ class _MapState extends State<MapClass> {
                     actions: [
                       TextButton(
                           onPressed: () {
+                            //widgetKey.currentState.sendHelpNotification();
+
                             //addUsers();
                             backend.sendHelpNotification();
                           },
@@ -673,19 +692,32 @@ class _MapState extends State<MapClass> {
                 });
           },
           materialTapTargetSize: MaterialTapTargetSize.padded,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red[600],
           child: const Icon(Icons.add, size: 36.0),
         ),
       ),
       Positioned(
-        bottom: 0,
-        left: 100,
-        child: IconButton(
-            icon: FaIcon(FontAwesomeIcons.ellipsisV),
+        bottom: 10,
+        left: 65,
+        child: FloatingActionButton(
             onPressed: () {
-              bottomMenu(context);
-              api();
-            }),
+              callForHelp(60.1733244, 24.9410248);
+              setState(() {
+                if (markers) {
+                  _markers.clear();
+                  markers = !markers;
+                } else {
+                  api();
+                  markers = true;
+                }
+              });
+            },
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            backgroundColor: Colors.blue[300],
+            child: const FaIcon(
+              FontAwesomeIcons.mapMarker,
+            )),
+        // bottomMenu(context);
       ),
     ]);
   }
