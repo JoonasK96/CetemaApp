@@ -30,7 +30,6 @@ class _MapState extends State<MapClass> {
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
-  String googleApikey = "AIzaSyCNMlfM0VGigoPrKuYpGs26lFHN4VzGSLs";
   bool lockCameraOnUser = true;
   bool color = false;
   bool color2 = false;
@@ -693,7 +692,8 @@ class _MapState extends State<MapClass> {
           },
           materialTapTargetSize: MaterialTapTargetSize.padded,
           backgroundColor: Colors.red[600],
-          child: const Icon(Icons.add, size: 36.0),
+          child: const FaIcon(
+    FontAwesomeIcons.handHoldingMedical,)
         ),
       ),
       Positioned(
