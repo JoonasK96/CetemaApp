@@ -8,17 +8,11 @@ import 'package:logger/logger.dart';
 
 import 'components/navigation.dart';
 import 'firebase2.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_app/components/User.dart';
-import 'package:flutter_app/components/map.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
-import 'dart:convert';
 
-import 'components/User.dart';
+import 'package:location/location.dart';
+
 import 'package:device_info/device_info.dart';
-import 'components/helpBoolean.dart' as globals;
-import 'components/helpLocation.dart' as globals2;
+
 import 'components/allGoodBoolean.dart' as globals3;
 
 //void main() => runApp(MyApp()); //korvasin tän tolla alemmalla t. Otto
@@ -88,7 +82,7 @@ class _AppState extends State<MyApp> {
   final testLocation = "testing1";
   final backend = FirebaseClass2();
 
-  Location _location = Location();
+  //Location _location = Location();
   //LocationData _locationData2;
   // ignore: cancel_subscriptions
   StreamSubscription<LocationData> locationSubscription;
@@ -100,7 +94,7 @@ class _AppState extends State<MyApp> {
   var userIdAndroid;
   double lat;
   double lon;
-  DatabaseReference _locationRef3 = FirebaseDatabase.instance.reference();
+  //DatabaseReference _locationRef3 = FirebaseDatabase.instance.reference();
   Timer _timer;
 
   @override

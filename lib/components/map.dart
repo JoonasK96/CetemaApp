@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_app/api/api.dart';
 import 'package:flutter_app/firebase2.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/compass.dart';
@@ -30,7 +29,6 @@ class _MapState extends State<MapClass> {
   StreamSubscription<LocationData> locationSubscription;
   bool visibility = false;
   double lat, lon;
-  List _user = [];
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
@@ -220,23 +218,6 @@ class _MapState extends State<MapClass> {
     lonForB = _locationData.longitude;
     //_countDistance();
     //return _locationData;
-  }
-
-  void _countDistance() {
-    List _nearest = [];
-
-    for (var i in _user) {
-      double distanceInMeters = Geolocator.distanceBetween(
-          _locationData.latitude,
-          _locationData.longitude,
-          i.latitude,
-          i.longitude);
-      // print(distanceInMeters);
-      _nearest.add(distanceInMeters);
-    }
-
-    _nearest.sort();
-    print(_nearest.first);
   }
 
   /* void bottomMenu(context) {
