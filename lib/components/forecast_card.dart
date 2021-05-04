@@ -45,6 +45,23 @@ class _ForecastState extends State<GetForecast> {
     setState(() {
       weatherValuesLoading = false;
     });
+
+  }
+
+  void forecastTableData() {
+    var d = 0;
+    var c = 1;
+    List humidity;
+    for(var i in forecastData){
+        if(forecastData[d].date != forecastData[c].date){
+          humidity[0].add(forecastData[d].humidity);
+            print(forecastData[d].humidity);
+        }
+        d++;
+        c++;
+
+    }
+
   }
 
   @override
