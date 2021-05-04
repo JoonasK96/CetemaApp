@@ -67,28 +67,43 @@ class FirebaseClass2 {
 
   void retrieveLocation() {
     //final ref = fb.reference();
-    _locationRef.once().then((DataSnapshot data) {
-      print(data.value);
-      print(data.key);
-      dataBlob = data.value; //koko db
+    var lists = [];
+    _locationRef.once().then((DataSnapshot data2) {
+      print(data2.value);
+      print(data2.key);
+      //dataBlob = data.value; //koko db
+      //Map<String, dynamic> dbMap = json.decode(data2.value);
+      //dataBlob = dbMap["child"];
+      //print('perkele $dbMap');
+      //Map<String, dynamic> mappens =
+      //   new Map<String, dynamic>.from(json.decode(data2.value));
+      //print(mappens);
+      //final userdata = new Map<dynamic, dynamic>.from(json.decode(data2.value));
+      Map<dynamic, dynamic> values = data2.value;
+      values.forEach((key, values) {
+        var settii = json.decode(values);
+        lists.add(User.fromJson(settii));
+      });
+      print('tää ois tällänen ${lists[0].latitude}');
+      countDistance(lists);
     });
 
-    _locationRef.child("testing1").once().then((DataSnapshot data) {
-      //print('help! $data.value');
-      print(data.value);
-      print(data.key);
-      //setState(() {
+    //_locationRef.child("testing1").once().then((DataSnapshot data) {
+    //print('help! $data.value');
+    // print(data.value);
+    // print(data.key);
+    //setState(() {
 
-      Map<String, dynamic> userMap = jsonDecode(data.value);
-      var retrievedData = User.fromJson(
-          userMap); //tää retrievedData on nyt se DB:stä haettu yhen käyttäjän datamöykky
-      print(retrievedData.latitude);
-      print(retrievedData.longitude);
-      print(retrievedData.id);
-      print(retrievedData.needsHelp);
-      //countDistance(retrievedData.latitude, retrievedData.longitude);
-      //});
-    });
+    // Map<String, dynamic> userMap = jsonDecode(data.value);
+    // var retrievedData = User.fromJson(
+    //    userMap); //tää retrievedData on nyt se DB:stä haettu yhen käyttäjän datamöykky
+    //print(retrievedData.latitude);
+    //print(retrievedData.longitude);
+    //print(retrievedData.id);
+    //print(retrievedData.needsHelp);
+    //countDistance(retrievedData.latitude, retrievedData.longitude);
+    //});
+    //});
   }
 
   Future<void> getLocation() async {
@@ -102,20 +117,25 @@ class FirebaseClass2 {
     print("help has been requested by some user");
   }
 
-  void countDistance(latitudeX, longitudeX) {
+  void countDistance(allUsers) {
     List _nearest = [];
+    double latitudeX = 0;
+    double longitudeX = 0;
 
-    for (var i in _user) {
+    for (var i in allUsers) {
+      latitudeX = i.latitude;
+      longitudeX = i.longitude;
+      print('juu elikkäs $latitudeX');
       double distanceInMeters = Geolocator.distanceBetween(
           _locationData.latitude,
           _locationData.longitude,
-          i.latitude,
-          i.longitude);
-      // print(distanceInMeters);
+          latitudeX,
+          longitudeX);
+      print(distanceInMeters);
       _nearest.add(distanceInMeters);
     }
 
-    //_nearest.sort();
-    //print(_nearest.first);
+    _nearest.sort();
+    print(_nearest.first);
   }
 }
