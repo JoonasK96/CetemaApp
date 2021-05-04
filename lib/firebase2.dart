@@ -91,7 +91,7 @@ class FirebaseClass2 {
     });
   }
 
-  void getLocation() async {
+  Future<void> getLocation() async {
     _locationData = await _location.getLocation();
     //countDistance();
     //return _locationData;

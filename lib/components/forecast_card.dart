@@ -48,22 +48,6 @@ class _ForecastState extends State<GetForecast> {
 
   }
 
-  void forecastTableData() {
-    var d = 0;
-    var c = 1;
-    List humidity;
-    for(var i in forecastData){
-        if(forecastData[d].date != forecastData[c].date){
-          humidity[0].add(forecastData[d].humidity);
-            print(forecastData[d].humidity);
-        }
-        d++;
-        c++;
-
-    }
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,6 +65,7 @@ class _ForecastState extends State<GetForecast> {
                 ),
               ),
             ),
+
           ],
         ),
         Container(
