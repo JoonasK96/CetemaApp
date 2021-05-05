@@ -9,13 +9,19 @@ import 'package:logger/logger.dart';
 import 'components/navigation.dart';
 import 'firebase2.dart';
 
+import 'package:location/location.dart';
+
+import 'package:device_info/device_info.dart';
+
+import 'components/allGoodBoolean.dart' as globals3;
+
 //void main() => runApp(MyApp()); //korvasin tän tolla alemmalla t. Otto
 final logger = Logger();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cron = Cron();
-  final backend = FirebaseClass2();
+  //final backend = FirebaseClass2();
   cron.schedule(Schedule.parse('*/1 * * * *'), () async {
     print('every minute, minute passes');
 
@@ -25,9 +31,15 @@ Future<void> main() async {
 
     //var juuh = new FirebaseClass();
     //var locationnnnn = new
-    //widgetKey.currentState.sendLocation();
-    backend.getLocation();
-    backend.sendLocation();
+    //widgetKey3.currentState.backend.getLocation2();
+    //widgetKey3.currentState.backend.sendLocation();
+    //widgetKey3.currentState.backend.checkIfHelpNeeded();
+    //widgetKey3.currentState.getLocation3();
+    //widgetKey3.currentState.sendLocation2();
+    //backend.getLocation2();
+    //backend.sendLocation();
+    //backend.gibLocation();
+    //backend.checkIfHelpNeeded();
   });
 
   runApp(MyApp());
@@ -61,11 +73,65 @@ class MyApp extends StatefulWidget {
 
 }
 
+GlobalKey<_AppState> widgetKey3 = GlobalKey<_AppState>();
+
 class _AppState extends State<MyApp> {
   //Firebase initti
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   final fb = FirebaseDatabase.instance;
   final testLocation = "testing1";
+  final backend = FirebaseClass2();
+
+  //Location _location = Location();
+  //LocationData _locationData2;
+  // ignore: cancel_subscriptions
+  StreamSubscription<LocationData> locationSubscription;
+  //final fb = FirebaseDatabase.instance;
+  //final testLocation = "testing1";
+  //List _user = [];
+  List<dynamic> dataBlob;
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  var userIdAndroid;
+  double lat;
+  double lon;
+  //DatabaseReference _locationRef3 = FirebaseDatabase.instance.reference();
+  Timer _timer;
+
+  @override
+  void initState() {
+    updateLocation();
+    super.initState();
+  }
+
+  ///////
+
+  Future<void> dearDevice() async {
+    //Map<String, dynamic> deviceData = <String, dynamic>{};
+
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    userIdAndroid = androidInfo.androidId;
+    print('Running on ${androidInfo.androidId}');
+  }
+
+  updateLocation() {
+    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
+      print('preparing to get location...');
+      backend.getLocation2();
+      print('updating location...');
+      //backend.sendLocation();
+      if (globals3.isAllGood = true) {
+        //backend.checkIfHelpNeeded();
+        //widgetKey2.currentState.checkIfHelpNeeded();
+        print('KAIK HYVIN');
+      }
+    });
+  }
+
+  stopUpdatingLocation() {
+    _timer.cancel();
+  }
+
+  ///////
 
   @override
   Widget build(BuildContext context) {
@@ -87,23 +153,5 @@ class _AppState extends State<MyApp> {
             })
         //Navigation(),
         );
-  }
-
-  var retrievedLocation;
-
-  void sendLocation() {
-    final ref = fb.reference();
-    ref.child(testLocation).set("ebin");
-  }
-
-  void retrieveLocation() {
-    final ref = fb.reference();
-    ref.child("testing1").once().then((DataSnapshot data) {
-      print(data.value);
-      print(data.key);
-      setState(() {
-        retrievedLocation = data.value;
-      });
-    });
   }
 }

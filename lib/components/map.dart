@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_app/api/api.dart';
 import 'package:flutter_app/firebase2.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/compass.dart';
@@ -10,13 +9,17 @@ import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
+import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_app/components/User.dart';
+import 'allGoodBoolean.dart' as globals3;
 
 class MapClass extends StatefulWidget {
   @override
   _MapState createState() => _MapState();
 }
 
-GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
+final GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
 
 class _MapState extends State<MapClass> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
@@ -26,7 +29,6 @@ class _MapState extends State<MapClass> {
   StreamSubscription<LocationData> locationSubscription;
   bool visibility = false;
   double lat, lon;
-  List _user = [];
   Timer timer;
   final logger = Logger();
   bool isCameraLocked = false;
@@ -43,6 +45,61 @@ class _MapState extends State<MapClass> {
   bool markers = false;
   List<String> markerIdList;
   final backend = FirebaseClass2();
+  double latForB;
+  double lonForB;
+  DatabaseReference _locationRef2 = FirebaseDatabase.instance.reference();
+  Timer _timer;
+
+  void checkIfHelpNeeded2() {
+    var lists2 = [];
+    _locationRef2.once().then((DataSnapshot data2) {
+      print(data2.value);
+      print(data2.key);
+      //dataBlob = data.value; //koko db
+      //Map<String, dynamic> dbMap = json.decode(data2.value);
+      //dataBlob = dbMap["child"];
+      //print('perkele $dbMap');
+      //Map<String, dynamic> mappens =
+      //   new Map<String, dynamic>.from(json.decode(data2.value));
+      //print(mappens);
+      //final userdata = new Map<dynamic, dynamic>.from(json.decode(data2.value));
+      Map<dynamic, dynamic> values = data2.value;
+      values.forEach((key, values) {
+        var settii = json.decode(values);
+        lists2.add(User.fromJson(settii));
+      });
+      print('chekattu ${lists2[0].latitude}');
+
+      //countDistance(lists);
+
+      for (var i in lists2) {
+        if (i.needsHelp == false) {
+          print('ei avun tarpeessa: ${i.id}');
+        } else {
+          print('avun tarpeessa! ${i.id}');
+          //widgetKey2.currentState.callForHelp(i.latitude, i.longitude);
+          callForHelp(i.latitude, i.longitude);
+        }
+      }
+    });
+  }
+
+  updateHelp() {
+    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
+      //print('getting location...');
+      //backend.getLocation2();
+      //print('updating location...');
+      //backend.sendLocation();
+      if (globals3.isAllGood = true) {
+        //backend.checkIfHelpNeeded();
+        checkIfHelpNeeded2();
+      }
+    });
+  }
+
+  stopUpdatingLocation() {
+    _timer.cancel();
+  }
 
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
@@ -122,6 +179,7 @@ class _MapState extends State<MapClass> {
   void initState() {
     super.initState();
     setCustomMarker();
+    updateHelp();
   }
 
   void cameraLock(isCameraLocked) {
@@ -156,25 +214,10 @@ class _MapState extends State<MapClass> {
 
   void getLocation() async {
     _locationData = await _location.getLocation();
-    _countDistance();
+    latForB = _locationData.latitude;
+    lonForB = _locationData.longitude;
+    //_countDistance();
     //return _locationData;
-  }
-
-  void _countDistance() {
-    List _nearest = [];
-
-    for (var i in _user) {
-      double distanceInMeters = Geolocator.distanceBetween(
-          _locationData.latitude,
-          _locationData.longitude,
-          i.latitude,
-          i.longitude);
-      // print(distanceInMeters);
-      _nearest.add(distanceInMeters);
-    }
-
-    _nearest.sort();
-    print(_nearest.first);
   }
 
   /* void bottomMenu(context) {
@@ -668,33 +711,33 @@ class _MapState extends State<MapClass> {
         bottom: 120,
         right: 10,
         child: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Do you want  to call for help?"),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            //widgetKey.currentState.sendHelpNotification();
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Do you want  to call for help?"),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              //widgetKey.currentState.sendHelpNotification();
 
-                            //addUsers();
-                            backend.sendHelpNotification();
-                          },
-                          child: Text("YES")),
-                      TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: Text("NO"))
-                    ],
-                  );
-                });
-          },
-          materialTapTargetSize: MaterialTapTargetSize.padded,
-          backgroundColor: Colors.red[600],
-          child: const FaIcon(
-    FontAwesomeIcons.handHoldingMedical,)
-        ),
+                              //addUsers();
+                              backend.sendHelpNotification(); //latForB, lonForB
+                            },
+                            child: Text("YES")),
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text("NO"))
+                      ],
+                    );
+                  });
+            },
+            materialTapTargetSize: MaterialTapTargetSize.padded,
+            backgroundColor: Colors.red[600],
+            child: const FaIcon(
+              FontAwesomeIcons.handHoldingMedical,
+            )),
       ),
       Positioned(
         bottom: 10,

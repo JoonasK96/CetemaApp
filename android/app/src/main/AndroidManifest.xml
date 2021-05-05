@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
    <application
-        android:label="flutter_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="CetemaApp"
+        android:icon="@mipmap/tree">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

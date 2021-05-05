@@ -1,16 +1,9 @@
-# flutter_app
+This app utilizes Maanmittauslaitos (National Land Survey of Finland) API and Google Maps API. For Google Maps API the user must have a working Google API key. https://developers.google.com/maps/documentation/javascript/get-api-key You can restrict it to Maps SDK for Android if you want.
 
-A new Flutter application.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+After acquiring the API key the user must open this project and go to android\app\src\main\res\values\ and then create a file called google_maps_key.xml
+Then copypaste this: 
+<resources>
+      <string name="google_maps_key" templateMergeStrategy="preserve"
+          translatable="false">INSERT GOOGLE MAPS API KEY HERE</string>
+</resources>
+And once you've copied the API key to the place described the app should start running. If you tried to run the app before this, uninstall it and try again.
