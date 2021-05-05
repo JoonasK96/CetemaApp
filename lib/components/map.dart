@@ -744,7 +744,6 @@ class _MapState extends State<MapClass> {
         left: 65,
         child: FloatingActionButton(
             onPressed: () {
-              callForHelp(60.1733244, 24.9410248);
               setState(() {
                 if (markers) {
                   _markers.clear();
