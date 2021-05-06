@@ -45,7 +45,6 @@ class _ForecastState extends State<GetForecast> {
     setState(() {
       weatherValuesLoading = false;
     });
-
   }
 
   @override
@@ -65,7 +64,6 @@ class _ForecastState extends State<GetForecast> {
                 ),
               ),
             ),
-
           ],
         ),
         Container(

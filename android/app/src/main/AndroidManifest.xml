@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
    <application
-        android:label="CetemaApp"
+        android:label="Navifore"
         android:icon="@mipmap/tree">
         <activity
             android:name=".MainActivity"

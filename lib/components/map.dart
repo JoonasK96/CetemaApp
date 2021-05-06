@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/components/User.dart';
 import 'allGoodBoolean.dart' as globals3;
+import 'package:geolocator/geolocator.dart';
 
 class MapClass extends StatefulWidget {
   @override
@@ -51,18 +52,12 @@ class _MapState extends State<MapClass> {
   Timer _timer;
 
   void checkIfHelpNeeded2() {
+    getLocation();
     var lists2 = [];
     _locationRef2.once().then((DataSnapshot data2) {
       print(data2.value);
       print(data2.key);
-      //dataBlob = data.value; //koko db
-      //Map<String, dynamic> dbMap = json.decode(data2.value);
-      //dataBlob = dbMap["child"];
-      //print('perkele $dbMap');
-      //Map<String, dynamic> mappens =
-      //   new Map<String, dynamic>.from(json.decode(data2.value));
-      //print(mappens);
-      //final userdata = new Map<dynamic, dynamic>.from(json.decode(data2.value));
+
       Map<dynamic, dynamic> values = data2.value;
       values.forEach((key, values) {
         var settii = json.decode(values);
@@ -70,15 +65,28 @@ class _MapState extends State<MapClass> {
       });
       print('chekattu ${lists2[0].latitude}');
 
-      //countDistance(lists);
-
       for (var i in lists2) {
         if (i.needsHelp == false) {
           print('ei avun tarpeessa: ${i.id}');
+        } else if (i.needsHelp == true) {
+          print('avun tarpeessa: ${i.id}');
+          if (_locationData == null) {
+            print('_locationData is null');
+          } else {
+            double ownLatitude = _locationData.latitude;
+            double ownLongitude = _locationData.longitude;
+            double distanceInMeters = Geolocator.distanceBetween(
+                ownLatitude, ownLongitude, i.latitude, i.longitude);
+            print(distanceInMeters);
+            if (distanceInMeters <= 20000) {
+              callForHelp(i.latitude, i.longitude);
+            } else {
+              print(
+                  'The person in need of help is over 20km away, you have not been notified.');
+            }
+          }
         } else {
-          print('avun tarpeessa! ${i.id}');
-          //widgetKey2.currentState.callForHelp(i.latitude, i.longitude);
-          callForHelp(i.latitude, i.longitude);
+          print('ei true eikä false????');
         }
       }
     });
@@ -134,7 +142,7 @@ class _MapState extends State<MapClass> {
         "1000",
         "${_locationData.longitude}",
         "${_locationData.latitude}",
-        "4237121f-2d10-4722-bb95-3193dd546af5"));
+        "50913b6d-2af6-4741-bd12-78ff779e95b2"));
     var i = 0;
     setState(() {
       // ignore: unused_local_variable
