@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/components/User.dart';
 import 'allGoodBoolean.dart' as globals3;
+import 'package:geolocator/geolocator.dart';
 
 class MapClass extends StatefulWidget {
   @override
@@ -51,6 +52,7 @@ class _MapState extends State<MapClass> {
   Timer _timer;
 
   void checkIfHelpNeeded2() {
+    getLocation();
     var lists2 = [];
     _locationRef2.once().then((DataSnapshot data2) {
       print(data2.value);
@@ -75,13 +77,51 @@ class _MapState extends State<MapClass> {
       for (var i in lists2) {
         if (i.needsHelp == false) {
           print('ei avun tarpeessa: ${i.id}');
+        } else if (i.needsHelp == true) {
+          print('avun tarpeessa: ${i.id}');
+          if (_locationData == null) {
+            //There seems to be a bug with the LocationData() so I put this here to prevent errors.
+            //_locationData == null results in counting distance not happening.
+            print('_locationData is null');
+          } else {
+            double ownLatitude = _locationData.latitude;
+            double ownLongitude = _locationData.longitude;
+            double distanceInMeters = Geolocator.distanceBetween(
+                ownLatitude, ownLongitude, i.latitude, i.longitude);
+            print(distanceInMeters);
+            if (distanceInMeters <= 20000) {
+              callForHelp(i.latitude, i.longitude);
+            } else {
+              print(
+                  'The person in need of help is over 20km away, they have not been notified.');
+            }
+          }
+          //callForHelp(i.latitude,i.longitude); // This is here temporarily to allow the app to work while there is the location bug. If distance works, this should be removed.
         } else {
-          print('avun tarpeessa! ${i.id}');
-          //widgetKey2.currentState.callForHelp(i.latitude, i.longitude);
-          callForHelp(i.latitude, i.longitude);
+          print('ei true eikä false????');
         }
       }
     });
+  }
+
+  void countDistance(lat, lon) {
+    List _nearest = [];
+    double latitudeX = 0;
+    double longitudeX = 0;
+    double ownLatitude = _locationData.latitude;
+    double ownLongitude = _locationData.longitude;
+
+    latitudeX = lat;
+    longitudeX = lon;
+
+    print('juu elikkäs $latitudeX');
+    double distanceInMeters = Geolocator.distanceBetween(
+        ownLatitude, ownLongitude, latitudeX, longitudeX);
+    print(distanceInMeters);
+    _nearest.add(distanceInMeters);
+
+    _nearest.sort();
+    print(_nearest.first);
   }
 
   updateHelp() {
@@ -134,7 +174,7 @@ class _MapState extends State<MapClass> {
         "1000",
         "${_locationData.longitude}",
         "${_locationData.latitude}",
-        "4237121f-2d10-4722-bb95-3193dd546af5"));
+        "50913b6d-2af6-4741-bd12-78ff779e95b2"));
     var i = 0;
     setState(() {
       // ignore: unused_local_variable
