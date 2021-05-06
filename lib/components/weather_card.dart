@@ -44,6 +44,9 @@ class _WeatherState extends State<GetWeather> {
     weather = w.weatherConditionCode;
     temp = w.temperature;
     icon = w.weatherIcon;
+    setState(() {
+      loading = false;
+    });
     weatherImg();
     debugPrint('sää: $weather');
   }
