@@ -14,7 +14,7 @@ class GetForecast extends StatefulWidget {
 }
 
 class _ForecastState extends State<GetForecast> {
-  String key = '1f37f76405b72d05797fa4ada00ab9fe';
+  String key = 'ba614d1580782f5af7e13e5063d6961e';
   WeatherFactory ws;
   double lat, lon;
   List<Weather> forecastData = [];
@@ -45,7 +45,6 @@ class _ForecastState extends State<GetForecast> {
     setState(() {
       weatherValuesLoading = false;
     });
-
   }
 
   @override
@@ -65,7 +64,6 @@ class _ForecastState extends State<GetForecast> {
                 ),
               ),
             ),
-
           ],
         ),
         Container(
