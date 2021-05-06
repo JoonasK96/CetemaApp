@@ -57,14 +57,7 @@ class _MapState extends State<MapClass> {
     _locationRef2.once().then((DataSnapshot data2) {
       print(data2.value);
       print(data2.key);
-      //dataBlob = data.value; //koko db
-      //Map<String, dynamic> dbMap = json.decode(data2.value);
-      //dataBlob = dbMap["child"];
-      //print('perkele $dbMap');
-      //Map<String, dynamic> mappens =
-      //   new Map<String, dynamic>.from(json.decode(data2.value));
-      //print(mappens);
-      //final userdata = new Map<dynamic, dynamic>.from(json.decode(data2.value));
+
       Map<dynamic, dynamic> values = data2.value;
       values.forEach((key, values) {
         var settii = json.decode(values);
@@ -72,16 +65,12 @@ class _MapState extends State<MapClass> {
       });
       print('chekattu ${lists2[0].latitude}');
 
-      //countDistance(lists);
-
       for (var i in lists2) {
         if (i.needsHelp == false) {
           print('ei avun tarpeessa: ${i.id}');
         } else if (i.needsHelp == true) {
           print('avun tarpeessa: ${i.id}');
           if (_locationData == null) {
-            //There seems to be a bug with the LocationData() so I put this here to prevent errors.
-            //_locationData == null results in counting distance not happening.
             print('_locationData is null');
           } else {
             double ownLatitude = _locationData.latitude;
@@ -93,35 +82,14 @@ class _MapState extends State<MapClass> {
               callForHelp(i.latitude, i.longitude);
             } else {
               print(
-                  'The person in need of help is over 20km away, they have not been notified.');
+                  'The person in need of help is over 20km away, you have not been notified.');
             }
           }
-          //callForHelp(i.latitude,i.longitude); // This is here temporarily to allow the app to work while there is the location bug. If distance works, this should be removed.
         } else {
           print('ei true eikä false????');
         }
       }
     });
-  }
-
-  void countDistance(lat, lon) {
-    List _nearest = [];
-    double latitudeX = 0;
-    double longitudeX = 0;
-    double ownLatitude = _locationData.latitude;
-    double ownLongitude = _locationData.longitude;
-
-    latitudeX = lat;
-    longitudeX = lon;
-
-    print('juu elikkäs $latitudeX');
-    double distanceInMeters = Geolocator.distanceBetween(
-        ownLatitude, ownLongitude, latitudeX, longitudeX);
-    print(distanceInMeters);
-    _nearest.add(distanceInMeters);
-
-    _nearest.sort();
-    print(_nearest.first);
   }
 
   updateHelp() {
