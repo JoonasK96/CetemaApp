@@ -9,7 +9,7 @@ class WeatherBox extends StatefulWidget {
 }
 
 class _WeatherBoxState extends State<WeatherBox> {
-  String key = '1f37f76405b72d05797fa4ada00ab9fe';
+  String key = 'ba614d1580782f5af7e13e5063d6961e';
   WeatherFactory ws;
   double lat, lon;
   String location;
