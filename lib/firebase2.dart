@@ -79,6 +79,7 @@ class FirebaseClass2 {
       print('AndroidId is null!');
     } else {
       print('AndroidId is ok :)');
+
       _locationRef.child(userIdAndroid).set(jsonString);
     }
 
