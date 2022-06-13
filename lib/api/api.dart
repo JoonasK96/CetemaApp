@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-Future<List> fetchPosts( lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
+Future<List?> fetchPosts( lang, sources, boundarycircleradius, pointlon, pointlat, apikey) async {
 
 
 String url = "https://avoin-paikkatieto.maanmittauslaitos.fi/geocoding/v1/pelias/reverse?lang=$lang&sources=$sources&boundary.circle.radius=$boundarycircleradius&point.lon=$pointlon&point.lat=$pointlat&api-key=$apikey";
@@ -13,7 +13,7 @@ print(url);
   http.Response response = await http.get(Uri.parse(url));
   if(response.statusCode == 200) {
     Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic> data = map["features"];
+    List<dynamic>? data = map["features"];
    // print(data[0]["properties"]);
 
 
@@ -36,7 +36,7 @@ print(url);
 }
 
 class Post {
-   String id;
+   String? id;
 
 
   Post({
@@ -53,7 +53,7 @@ class Post {
 }
 
 class Features {
-  final String id;
+  final String? id;
 
   Features({this.id});
   factory Features.fromJson(Map<String, dynamic> parsedJson){

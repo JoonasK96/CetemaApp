@@ -8,7 +8,7 @@ part of 'MML_Api.dart';
 
 Task _$TaskFromJson(Map<String, dynamic> json) {
   return Task(
-    json['features'] as List,
+    json['features'] as List?,
   );
 }
 
@@ -29,7 +29,7 @@ class _RestClient implements RestClient {
 
   final Dio _dio;
 
-  String baseUrl;
+  String? baseUrl;
 
   @override
   Future<List<String>> getTasks(
@@ -56,9 +56,9 @@ class _RestClient implements RestClient {
             method: 'GET',
             headers: <String, dynamic>{},
             extra: _extra,
-            baseUrl: baseUrl),
+            baseUrl: baseUrl) as Options?,
         data: _data);
-    final value = _result.data.cast<String>();
+    final value = _result.data!.cast<String>();
     return value;
   }
 }

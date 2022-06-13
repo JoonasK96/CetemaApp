@@ -1,5 +1,11 @@
 import 'dart:async';
+import 'package:device_info/device_info.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_app/Models/db_users.dart';
+import 'package:flutter_app/Models/user_notifier.dart';
 import 'package:flutter_app/api/api.dart';
+import 'package:flutter_app/components/helpAlert.dart';
+import 'package:flutter_app/components/helpCallButton.dart';
 import 'package:flutter_app/firebase2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +15,10 @@ import 'package:location/location.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_app/components/smallWaetherBox.dart';
-import 'dart:convert';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/components/User.dart';
-import 'allGoodBoolean.dart' as globals3;
-import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import '../Models/location_stream.dart';
+
 
 class MapClass extends StatefulWidget {
   @override
@@ -24,13 +29,12 @@ final GlobalKey<_MapState> widgetKey2 = GlobalKey<_MapState>();
 
 class _MapState extends State<MapClass> {
   LatLng _initialcameraposition = LatLng(60.00, 25.00);
-  GoogleMapController _controller;
+  late GoogleMapController _controller;
   Location _location = Location();
-  LocationData _locationData;
-  StreamSubscription<LocationData> locationSubscription;
+  late LocationData _locationData;
+  late StreamSubscription<LocationData> locationSubscription;
   bool visibility = false;
-  double lat, lon;
-  Timer timer;
+  Timer? timer;
   final logger = Logger();
   bool isCameraLocked = false;
   bool lockCameraOnUser = true;
@@ -41,102 +45,74 @@ class _MapState extends State<MapClass> {
   bool color5 = false;
   bool color6 = false;
   Set<Marker> _markers = {};
-  BitmapDescriptor mapMarker;
-  BitmapDescriptor helpMapMarker;
+  final _db = FirebaseDatabase.instance.ref();
+  late StreamSubscription<DatabaseEvent> usersStream;
+  List<Users> _dbUser = [];
+  List<Users> get users => _dbUser;
+  static const USERS_PATH = 'users';
+  late BitmapDescriptor mapMarker;
+  late BitmapDescriptor helpMapMarker;
+  late BitmapDescriptor helpingMapMarker;
   bool markers = false;
-  List<String> markerIdList;
+  List<String>? markerIdList;
   final backend = FirebaseClass2();
-  double latForB;
-  double lonForB;
-  DatabaseReference _locationRef2 = FirebaseDatabase.instance.reference();
-  Timer _timer;
+  late double latForB;
+  late double lonForB;
+  late bool needsHelp = true;
+  var isVisible = false;
+ var currentUser = User;
+  var userIdAndroid;
+late Stream myFututre = LocationStream().getUserStream();
+late Stream myFututre2 = LocationStream().getStream();
 
-  void checkIfHelpNeeded2() {
-    getLocation();
-    var lists2 = [];
-    _locationRef2.once().then((DataSnapshot data2) {
-      print(data2.value);
-      print(data2.key);
+  late bool isHelping = true;
+late Marker helpMarker =  Marker(
+      markerId: MarkerId("needsHelp"),
+      position: LatLng(60, 24),
+      icon: helpMapMarker,
+      visible: false,
+      infoWindow: InfoWindow(
+        title: "This user needs help!",
+      ));
+late Marker isHelpingMarker =  Marker(
+      markerId: MarkerId("isHelping"),
+      position: LatLng(60, 24),
+      icon: helpingMapMarker,
+      visible: false,
+      infoWindow: InfoWindow(
+        title: "This user needs help!",
+      ));
 
-      Map<dynamic, dynamic> values = data2.value;
-      values.forEach((key, values) {
-        var settii = json.decode(values);
-        lists2.add(User.fromJson(settii));
-      });
-      print('chekattu ${lists2[0].latitude}');
+  void _onMapCreated(GoogleMapController _cntlr) async {
 
-      for (var i in lists2) {
-        if (i.needsHelp == false) {
-          print('ei avun tarpeessa: ${i.id}');
-        } else if (i.needsHelp == true) {
-          print('avun tarpeessa: ${i.id}');
-          if (_locationData == null) {
-            print('_locationData is null');
-          } else {
-            double ownLatitude = _locationData.latitude;
-            double ownLongitude = _locationData.longitude;
-            double distanceInMeters = Geolocator.distanceBetween(
-                ownLatitude, ownLongitude, i.latitude, i.longitude);
-            print(distanceInMeters);
-            if (distanceInMeters <= 20000) {
-              callForHelp(i.latitude, i.longitude);
-            } else {
-              print(
-                  'The person in need of help is over 20km away, you have not been notified.');
-            }
-          }
-        } else {
-          print('ei true eikä false????');
-        }
-      }
-    });
-  }
-
-  updateHelp() {
-    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
-      //print('getting location...');
-      //backend.getLocation2();
-      //print('updating location...');
-      //backend.sendLocation();
-      if (globals3.isAllGood = true) {
-        //backend.checkIfHelpNeeded();
-        checkIfHelpNeeded2();
-      }
-    });
-  }
-
-  stopUpdatingLocation() {
-    _timer.cancel();
-  }
-
-  void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     locationSubscription = _location.onLocationChanged.listen((l) {
+
+      print("${l.latitude} ja longitude ${l.longitude}");
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(l.latitude, l.longitude), zoom: 15)),
+            CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15)),
       );
+
     });
+
+  }
+  Future<void> getDeviceId() async {
+    try{
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+       userIdAndroid = androidInfo.androidId;
+      print('Running on ${androidInfo.androidId}');
+    }catch (e){
+      print("Getting android id failed $e");
+    }
   }
 
-  void callForHelp(double needsHelpLat, double needsHelpLon) {
-    cameraLock(false);
-    _markers.add(Marker(
-        markerId: MarkerId("$needsHelpLat"),
-        position: LatLng(needsHelpLat, needsHelpLon),
-        icon: helpMapMarker,
-        infoWindow: InfoWindow(
-          title: "This user needs help!",
-        )));
 
-    _controller.animateCamera(
-      CameraUpdate.newLatLng(LatLng(needsHelpLat, needsHelpLon)),
-    );
-  }
 
   void api() async {
     _locationData = await _location.getLocation();
-    List<dynamic> features = (await fetchPosts(
+    List<dynamic>? features = (await fetchPosts(
         "fi",
         "geographic-names",
         "1000",
@@ -146,7 +122,7 @@ class _MapState extends State<MapClass> {
     var i = 0;
     setState(() {
       // ignore: unused_local_variable
-      for (var index in features) {
+      for (var index in features!) {
         _markers.add(Marker(
             markerId: MarkerId(features[i]['properties']['label']),
             position: LatLng(features[i]['geometry']['coordinates'][1],
@@ -168,27 +144,40 @@ class _MapState extends State<MapClass> {
         ImageConfiguration(size: Size(10, 10)), 'assets/marker.png');
     helpMapMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(size: Size(10, 10)), 'assets/helpmarker.png');
+    helpingMapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(0.01, 0.01)), 'assets/red-cross.png');
+  }
+  void dbStream() {
+
+    usersStream = _db.child(USERS_PATH).onValue.listen((event) {
+      print(event.snapshot.value);
+      final allUsers = Map<String, dynamic>.from(event.snapshot.value as Map<dynamic, dynamic>);
+      _dbUser = allUsers.values
+          .map((userAsJson) =>
+          Users.fromRTDB(Map<String, dynamic>.from(userAsJson)))
+          .toList();
+      setState(() {
+        createMarker(_dbUser);
+        removeMarkers(_dbUser);
+      });
+
+    print("DB STReAM");
+    });
+
   }
 
-/*  void addMarkers() {
-    setState(() {
-      _markers.add(Marker(
-          markerId: MarkerId('id-1'),
-          position: LatLng(60.18, 24.93),
-          icon: mapMarker,
-          infoWindow: InfoWindow(
-            title: 'joku',
-            snippet: 'hello',
-          )));
-    });
-  } */
+
 
   @override
   void initState() {
     super.initState();
     setCustomMarker();
-    updateHelp();
+    getDeviceId();
+    getUserlocation();
+    dbStream();
   }
+
+
 
   void cameraLock(isCameraLocked) {
     setState(() {
@@ -202,6 +191,8 @@ class _MapState extends State<MapClass> {
 
   MapType _currentMapType = MapType.normal;
 
+
+
   void _onMapTypeButtonPressed() {
     setState(() {
       print('kartta nappi');
@@ -209,6 +200,10 @@ class _MapState extends State<MapClass> {
           ? MapType.satellite
           : MapType.normal;
     });
+  }
+
+  void getUserlocation() async{
+    _locationData = await _location.getLocation();
   }
 
   void _compassOnPress() {
@@ -220,13 +215,274 @@ class _MapState extends State<MapClass> {
     });
   }
 
-  void getLocation() async {
-    _locationData = await _location.getLocation();
-    latForB = _locationData.latitude;
-    lonForB = _locationData.longitude;
-    //_countDistance();
-    //return _locationData;
+
+Future<void> callForHelp (double needsHelpLat, double needsHelpLon) async  {
+  cameraLock(false);
+//TEE USER NOTIFIERIIN FUNKKARI JOKA CHECKAA KUKA AUTTAA JA KETÄ AUTETAAN JONKA PERUSTEELLA MARKERIN LISÄYS.
+  isVisible = true;
+
+
+     try {
+       helpMarker = Marker(
+           markerId: MarkerId("needsHelp"),
+           position: LatLng(needsHelpLat, needsHelpLon),
+           icon: helpMapMarker,
+           visible: true,
+           infoWindow: InfoWindow(
+             title: "This user needs help!",
+           ));
+       _markers.add(helpMarker);
+       if(needsHelp) {
+       _controller.animateCamera(
+         CameraUpdate.newLatLng(LatLng(needsHelpLat, needsHelpLon)),
+       );
+       }
+      needsHelp = false;
+
+     } catch (e) {
+       print("ERROR while creating help marker $e");
+     }
+
+
   }
+Future<void> userComingToHelp (double helpingLat, double helpingLon) async  {
+    cameraLock(false);
+      isVisible = true;
+      print("object");
+      try {
+        isHelpingMarker = Marker(
+            markerId: MarkerId("isHelping"),
+            position: LatLng(helpingLat, helpingLon),
+            icon: helpingMapMarker,
+            visible: isVisible,
+            infoWindow: InfoWindow(
+              title: "User coming to help",
+            ));
+         _markers.add(isHelpingMarker);
+        if(isHelping) {
+        _controller.animateCamera(
+          CameraUpdate.newLatLng(LatLng(helpingLat, helpingLon)),
+        ); }
+
+        isHelping = false;
+
+
+      } catch (e) {
+        print("ERROR while creating help marker $e");
+      }
+
+
+
+  }
+  Future<void> removeMarkers(List<Users> model)async {
+
+
+    try {
+
+      late var myUserNeedsHelp = model.singleWhere((element) => element.id == userIdAndroid);
+      late var myElement = model.singleWhere((element) => element.id == userIdAndroid);
+
+      if (myElement.isHelping == ""){
+        setState(() {
+        _markers.removeWhere((marker) => marker.markerId.value == "needsHelp");
+        needsHelp = true;
+       print("positaaaaaaaaa 1");
+        });
+      }
+       if(myUserNeedsHelp.isGettingHelp == "") {
+      setState(() {
+        print("positaaaaaaaaa 2");
+       _markers.removeWhere((marker) => marker.markerId.value == "isHelping");
+        isHelping = true;
+
+      });
+      }
+    }catch(e){
+      print("ERROR: $e");
+    }
+  }
+
+  Future<void> createMarker(List<Users> model)async {
+    try {
+      print("pääseekö");
+      late final userNeedingHelp =  model.singleWhere((element) =>
+      element.isGettingHelp != "");
+      late final userHelping = model.singleWhere((element) =>
+      element.isHelping != "");
+
+      if( userNeedingHelp.isGettingHelp == userIdAndroid){
+            print("skeert");
+            callForHelp(userNeedingHelp.latitude, userNeedingHelp.longitude);
+      }
+      if(userHelping.isHelping == userIdAndroid) {
+        userComingToHelp(userHelping.latitude, userHelping.longitude);
+      }
+
+
+    }catch(e){
+      print("ERROR: $e");
+    }
+  }
+
+  /*
+  StreamBuilder checkIfCallingForHelp(){
+    //kokeile samalla tavalla kun help alertti jos silloin ei tulisi ongelmia streamin kuuntelun kanssa.
+
+     return StreamBuilder(
+        stream: myFututre2,
+        builder:  (context, AsyncSnapshot snapshot) {
+
+    print("dadadadadadadad adadada addadadda");
+    print(snapshot .hasData);
+
+    if(snapshot.hasData) {
+      print(snapshot);
+      print("pääsi ohi tässä");
+      late final myUser = snapshot.data as List<Users>;
+      try {
+       userNeedingHelp = myUser.singleWhere((element) =>
+        element.needsHelp == true);
+
+       userHelping = myUser.singleWhere((element) =>
+       element.isHelping != "" && element.isHelping == userIdAndroid);
+
+       userGettingHelp = myUser.singleWhere((element) =>
+       element.id == userIdAndroid && element.isGettingHelp != "");
+      }catch(e){
+        print(e);
+      }
+
+      print("tässä mennään fkjasghfqwieufgwqeiuf");
+      print("${userHelping} dawhdvbaujwhydawudawdaw");
+      print(userGettingHelp);
+      print(userNeedingHelp);
+
+     if(userGettingHelp != null  && userGettingHelp.id == userIdAndroid || userNeedingHelp != null && userNeedingHelp.needsHelp != false &&  userNeedingHelp.id == userIdAndroid ){
+      return Positioned(
+          bottom: 120,
+          right: 12,
+          child: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Do you want  to cancel help call?"),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            print("$userHelping tässä");
+                            if(userHelping == null || userHelping.id == ""){
+                              backend.cancelHelpCallWithoutId();
+
+                            }else{
+                              backend.cancelHelpCall(userHelping.id.toString());
+                            }
+
+
+                            Navigator.pop(context, false);
+
+                          },
+                          child: Text("YES")),
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text("NO"))
+                    ],
+                  );
+                });
+          },
+          materialTapTargetSize: MaterialTapTargetSize.padded,
+          backgroundColor: Colors.white70,
+          child: const Icon(
+            Icons.close,
+          )));
+    }
+     else{
+
+      return Positioned(
+          bottom: 120,
+          right: 12,
+          child: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Do you want  to call for help?"),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            backend.helpCall();
+                            Navigator.pop(context, false);
+
+                          },
+                          child: Text("YES")),
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: Text("NO"))
+                    ],
+                  );
+                });
+          },
+          materialTapTargetSize: MaterialTapTargetSize.padded,
+          backgroundColor: Colors.red[600],
+          child: const FaIcon(
+            FontAwesomeIcons.handHoldingMedical,
+          )));
+    }}else return SizedBox(width: 0, height: 0,);
+
+  });}*/
+
+
+
+/*void doesSomeOneNeedHelp(double lat, double lon) async {
+  StreamBuilder(
+      stream: LocationStream().getUserStream(),
+      builder:  (context, AsyncSnapshot snapshot){
+
+        if(snapshot.hasData){
+          var myUsers = snapshot.data as List<Users>;
+          print("TÄMÄ on ENNEN MAPIN LUONTIA ${myUsers[0].latitude}");
+          try{
+            print("${snapshot.data['needsHelp']}");
+
+
+            //   print("${needHelp.needsHelp}");
+            //if(needHelp != null && needHelp.needsHelp == true){
+            switch(visibility){
+              case true: {
+
+                Future.delayed(Duration.zero, () =>
+                    setState(() {
+                      isVisible = true;
+                    })
+                );
+                break;
+              }
+              case false: {
+                print("kukaan ei tarvitse apua");
+                break;
+
+              }
+            }
+
+            //LUO ALERT DIALOG JOSSA VASTAAT AUTATKO VAI ET JA JOS AUTAT NIIN LUO MARKER STREAMBUILDERISTA VOI OLLA
+            //APUA ALERTDIALOGIN KANSSA.
+
+
+
+          }catch(e){
+            print("ERROR $e");
+          }
+
+        }
+        return  Visibility(
+            visible: isVisible,
+            child:
+        );
+      }),
+
+}*/
 
   /* void bottomMenu(context) {
     showModalBottomSheet(
@@ -661,18 +917,32 @@ class _MapState extends State<MapClass> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      GoogleMap(
-        initialCameraPosition: CameraPosition(target: _initialcameraposition),
-        onMapCreated: _onMapCreated,
-        myLocationEnabled: true,
-        myLocationButtonEnabled: false,
-        markers: _markers,
-        padding: EdgeInsets.only(
-          top: 0,
-        ),
-        mapType: _currentMapType,
-      ),
+
+     GoogleMap(
+    initialCameraPosition: CameraPosition(target: _initialcameraposition),
+    onMapCreated: _onMapCreated,
+    myLocationEnabled: true,
+    myLocationButtonEnabled: false,
+    markers: _markers,
+    padding: EdgeInsets.only(
+    top: 0,
+    ),
+    mapType: _currentMapType,
+    ),
       Positioned(top: 30, right: 10, child: WeatherBox()),
+
+
+
+    ChangeNotifierProvider<UserNotifier>(
+    create: (_) => UserNotifier(),
+    child: HelpCallButton()),
+
+    ChangeNotifierProvider<UserNotifier>(
+    create: (_) => UserNotifier(),
+    child: AlertView()),
+
+
+
       Positioned(
         bottom: 10,
         left: 4,
@@ -715,38 +985,7 @@ class _MapState extends State<MapClass> {
             alignment: Alignment.bottomCenter,
             child: buildCompass(),
           )),
-      Positioned(
-        bottom: 120,
-        right: 10,
-        child: FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Do you want  to call for help?"),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              //widgetKey.currentState.sendHelpNotification();
 
-                              //addUsers();
-                              backend.sendHelpNotification(); //latForB, lonForB
-                            },
-                            child: Text("YES")),
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: Text("NO"))
-                      ],
-                    );
-                  });
-            },
-            materialTapTargetSize: MaterialTapTargetSize.padded,
-            backgroundColor: Colors.red[600],
-            child: const FaIcon(
-              FontAwesomeIcons.handHoldingMedical,
-            )),
-      ),
       Positioned(
         bottom: 10,
         left: 65,
@@ -769,6 +1008,7 @@ class _MapState extends State<MapClass> {
             )),
         // bottomMenu(context);
       ),
+
     ]);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:location/location.dart';
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
@@ -10,15 +11,18 @@ class WeatherBox extends StatefulWidget {
 
 class _WeatherBoxState extends State<WeatherBox> {
   String key = 'ba614d1580782f5af7e13e5063d6961e';
-  WeatherFactory ws;
-  double lat, lon;
-  String location;
-  DateTime date;
-  int weather;
-  Temperature temp;
-  String icon;
+  late WeatherFactory ws;
+  double? lat, lon;
+  Location location = Location();
+  DateTime? date;
+  int? weather;
+  Temperature? temp;
+  String? icon;
   bool isLoaded = true;
-
+  late bool _serviceEnabled;
+  PermissionStatus? _permissionGranted;
+  String? city;
+  late LocationData _locationData;
   @override
   void initState() {
     super.initState();
@@ -27,17 +31,35 @@ class _WeatherBoxState extends State<WeatherBox> {
   }
 
   void getLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    lat = position.latitude;
-    lon = position.longitude;
+    try{
+      _serviceEnabled = await location.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+        if (!_serviceEnabled) {
+          return;
+        }
+      }
+
+      _permissionGranted = await location.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted != PermissionStatus.granted) {
+          return;
+        }
+      }
+
+      _locationData = await location.getLocation();
+    lat = _locationData.latitude;
+    lon = _locationData.longitude;
     debugPrint('FYI: $lat');
     getWeather();
+  }catch(e){
+      print("small weatherbox data fetching failed: $e");
+    }
   }
 
   void getWeather() async {
-    Weather w = await ws.currentWeatherByLocation(lat, lon);
-    location = w.areaName;
+    Weather w = await ws.currentWeatherByLocation(lat!, lon!);
     date = w.date;
     weather = w.weatherConditionCode;
     temp = w.temperature;
@@ -65,7 +87,7 @@ class _WeatherBoxState extends State<WeatherBox> {
                 Wrap(
                   children: [
                     Image.network(
-                      "https://openweathermap.org/img/w/" + icon + ".png",
+                      "https://openweathermap.org/img/w/" + icon! + ".png",
                       height: 35,
                       fit: BoxFit.fitWidth,
                     ),

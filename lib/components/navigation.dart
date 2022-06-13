@@ -6,9 +6,9 @@ import 'dart:async';
 import 'package:flutter_app/screens/map_screen.dart';
 
 class Navigation extends StatefulWidget {
-  Navigation({Key key, this.title}) : super(key: key);
+  Navigation({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _NavigationState createState() => _NavigationState();
@@ -21,7 +21,7 @@ class _NavigationState extends State<Navigation> {
     WeatherScreen(),
   ];
   Future<bool> _onWillPop() async {
-    return (await showDialog(
+    return (await (showDialog(
           context: context,
           builder: (context) => new AlertDialog(
             title: new Text('Exit'),
@@ -38,7 +38,7 @@ class _NavigationState extends State<Navigation> {
             ],
             elevation: 24,
           ),
-        )) ??
+        ) as FutureOr<bool>?)) ??
         false;
   }
 

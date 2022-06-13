@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "174120774212",
-    "project_id": "navifore-24aed",
-    "storage_bucket": "navifore-24aed.appspot.com"
+    "project_number": "835935103834",
+    "firebase_url": "https://cetema-4ccff-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "cetema-4ccff",
+    "storage_bucket": "cetema-4ccff.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:174120774212:android:e48d4192063bec4ea22a11",
+        "mobilesdk_app_id": "1:835935103834:android:30472b6ff187189d1d6163",
         "android_client_info": {
           "package_name": "com.example.flutter_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "174120774212-rdet7uqah14bi900nnpmfb6jl7qd684k.apps.googleusercontent.com",
+          "client_id": "835935103834-2p2hctknk8if62foa8tgm4jqs08hmq9o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAw59BCNBpSxwm71RmHDFqmCJod7SiBncc"
+          "current_key": "AIzaSyBNSYV_TImo1siBPwfE-dP2DcVXxhhQPAs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "174120774212-rdet7uqah14bi900nnpmfb6jl7qd684k.apps.googleusercontent.com",
+              "client_id": "835935103834-2p2hctknk8if62foa8tgm4jqs08hmq9o.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

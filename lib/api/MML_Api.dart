@@ -20,7 +20,7 @@ abstract class RestClient {
 
 @JsonSerializable()
 class Task {
-List features;
+List? features;
   Task([this.features]);
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);

@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/components/weatherValues.dart';
-import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather/weather.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
@@ -15,11 +15,13 @@ class GetForecast extends StatefulWidget {
 
 class _ForecastState extends State<GetForecast> {
   String key = 'ba614d1580782f5af7e13e5063d6961e';
-  WeatherFactory ws;
-  double lat, lon;
+  late WeatherFactory ws;
+  late double lat, lon;
   List<Weather> forecastData = [];
-  String temp;
+  String? temp;
   bool weatherValuesLoading = true;
+  bool? _serviceEnabled;
+
   @override
   void initState() {
     super.initState();
@@ -28,17 +30,22 @@ class _ForecastState extends State<GetForecast> {
   }
 
   void getLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    lat = position.latitude;
-    lon = position.longitude;
-    debugPrint('FYI: $lat');
-    queryForecast();
+    try{
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      lat = position.latitude;
+      lon = position.longitude;
+      debugPrint('FYI: $lat');
+      debugPrint('FYI: forecastCARD');
+      queryForecast();
+    }catch(e){
+      print("weather location failed: $e");
+    }
+
   }
 
   void queryForecast() async {
-    List<Weather> forecasts =
-        (await ws.fiveDayForecastByLocation(lat, lon)).cast<Weather>();
+    List<Weather> forecasts = await ws.fiveDayForecastByLocation(lat, lon);
     forecastData = forecasts;
     print('$forecasts');
     temp = forecastData[1].temperature.toString();
@@ -98,7 +105,7 @@ class _ForecastState extends State<GetForecast> {
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
+          getTextStyles:  (context,value) => const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
             fontSize: 10,
@@ -126,7 +133,7 @@ class _ForecastState extends State<GetForecast> {
         ),
         leftTitles: SideTitles(
           showTitles: true,
-          getTextStyles: (value) => const TextStyle(
+          getTextStyles: (context, value) => const TextStyle(
             color: Color(0xff000000),
             fontWeight: FontWeight.bold,
             fontSize: 12,
@@ -193,7 +200,7 @@ class _ForecastState extends State<GetForecast> {
           ),
           belowBarData: BarAreaData(show: true, colors: [
             ColorTween(begin: Colors.blue, end: Colors.blue)
-                .lerp(0.2)
+                .lerp(0.2)!
                 .withOpacity(0.4),
           ]),
         ),
@@ -222,7 +229,7 @@ class _ForecastState extends State<GetForecast> {
               DateFormat('E, ha').format(DateTime.parse(item.date.toString())),
               '${item.temperature.toString().split(" ")[0]}°C',
               iconData: "https://openweathermap.org/img/w/" +
-                  item.weatherIcon +
+                  item.weatherIcon! +
                   ".png",
             )),
           );

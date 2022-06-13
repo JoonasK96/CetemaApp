@@ -1,4 +1,4 @@
 library my_prj.globals;
 
-double locationHelpLat;
-double locationHelpLon;
+double? locationHelpLat;
+double? locationHelpLon;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class WeatherValues extends StatelessWidget {
   final String label;
   final String value;
-  final String iconData;
+  final String? iconData;
 
   WeatherValues(this.label, this.value, {this.iconData});
 
@@ -21,13 +21,13 @@ class WeatherValues extends StatelessWidget {
           height: 5,
         ),
          Image.network(
-          iconData,
+          iconData!,
            height: 35,
            fit: BoxFit.fitWidth
         ),
 
         SizedBox(
-          height: 10,
+          height: 6,
         ),
         Text(
           this.value,

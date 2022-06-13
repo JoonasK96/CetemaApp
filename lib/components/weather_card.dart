@@ -12,15 +12,15 @@ class GetWeather extends StatefulWidget {
 
 class _WeatherState extends State<GetWeather> {
   String key = 'ba614d1580782f5af7e13e5063d6961e';
-  WeatherFactory ws;
-  double lat, lon;
-  String location;
-  DateTime date;
-  int weather;
-  Temperature temp;
-  String icon;
+  late WeatherFactory ws;
+  late double lat, lon;
+  String? location;
+  DateTime? date;
+  int? weather;
+  Temperature? temp;
+  String? icon;
   bool loading = true;
-
+  bool isLocationEnabled = false;
   @override
   void initState() {
     super.initState();
@@ -29,27 +29,35 @@ class _WeatherState extends State<GetWeather> {
   }
 
   void getLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    lat = position.latitude;
-    lon = position.longitude;
-    debugPrint('FYI: $lat');
-    getWeather();
+    try{
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      lat = position.latitude;
+      lon = position.longitude;
+      debugPrint('FYI: $lat');
+      debugPrint('FYI: WEATHERCARD');
+      getWeather();
+    }catch(e){
+      print("weather location failed: $e");
+    }
+
   }
 
   void getWeather() async {
-    Weather w = await ws.currentWeatherByLocation(lat, lon);
-    location = w.areaName;
-    date = w.date;
-    weather = w.weatherConditionCode;
-    temp = w.temperature;
-    icon = w.weatherIcon;
-    setState(() {
-      loading = false;
-    });
-    weatherImg();
-    debugPrint('sää: $weather');
+
+      Weather w = await ws.currentWeatherByLocation(lat, lon);
+      location = w.areaName;
+      date = w.date;
+      weather = w.weatherConditionCode;
+      temp = w.temperature;
+      icon = w.weatherIcon;
+      setState(() {
+        loading = false;
+      });
+      weatherImg();
+      debugPrint('sää: $weather');
   }
+
 
   void reload() async {
     final cron = Cron();
@@ -59,7 +67,7 @@ class _WeatherState extends State<GetWeather> {
   }
 
   AssetImage weatherImg() {
-    int num = weather;
+    int? num = weather;
     if (weather != 800) {
       num = int.tryParse(weather.toString().split("")[0]);
     }
@@ -113,6 +121,7 @@ class _WeatherState extends State<GetWeather> {
     return AssetImage("assets/sunny2.jpg");
   }
 
+
   void loadingDone() {
     setState(() {
       loading = false;
@@ -130,7 +139,7 @@ class _WeatherState extends State<GetWeather> {
                 ),
             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Container(
                 height: 200,
                 width: double.infinity,
@@ -163,7 +172,7 @@ class _WeatherState extends State<GetWeather> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            location,
+                            location!,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18.0,

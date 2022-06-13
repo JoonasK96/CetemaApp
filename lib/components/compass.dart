@@ -4,7 +4,7 @@ import 'package:flutter_compass/flutter_compass.dart';
 import 'dart:math' as math;
 
 Widget buildCompass() {
-  return StreamBuilder<double>(
+  return StreamBuilder<CompassEvent>(
     stream: FlutterCompass.events,
     builder: (context, snapshot) {
       if (snapshot.hasError) {
@@ -17,7 +17,7 @@ Widget buildCompass() {
         );
       }
 
-      double direction = snapshot.data;
+      double? direction = snapshot.data!.heading;
 
       // if direction is null, then device does not support this sensor
       // show error message
@@ -25,8 +25,11 @@ Widget buildCompass() {
         return Center(
           child: Text("Device does not have sensors !"),
         );
+      int ang;
+      if(direction.round().isNegative){
+        ang =  360 + direction.round();
+      }else ang = direction.round();
 
-      int ang = (direction.round());
       return Stack(
         children: [
           Container(
@@ -35,7 +38,7 @@ Widget buildCompass() {
 
             alignment: Alignment.center,
             child: Transform.rotate(
-              angle: ((direction ?? 0) * (math.pi / 180) * -1),
+              angle: (direction * (math.pi / 180) * -1),
               child: Image(image: AssetImage('assets/compass.png')),
             ),
           ),
@@ -45,7 +48,7 @@ Widget buildCompass() {
           Positioned.fill(
             child: Align(
               child: Text(
-                "$ang",
+                "${ang}",
                 style: TextStyle(
                   color: Color(0xFFEBEBEB),
                   fontSize: 20,
